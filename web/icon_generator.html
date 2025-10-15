@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Icon Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #EC4899);
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .icon-preview {
+            width: 192px;
+            height: 192px;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #6366F1, #8B5CF6, #EC4899);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .icon-content {
+            color: white;
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .download-btn {
+            background: linear-gradient(135deg, #6366F1, #8B5CF6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .download-btn:hover {
+            transform: translateY(-2px);
+        }
+        canvas {
+            display: none;
+        }
+        .instructions {
+            max-width: 600px;
+            margin-top: 30px;
+            text-align: left;
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="icon-container">
+        <h1>Portfolio Icon Generator</h1>
+        <div class="icon-preview" id="iconPreview">
+            <div class="icon-content">P</div>
+        </div>
+        <button class="download-btn" onclick="downloadIcon(192)">Download 192x192</button>
+        <button class="download-btn" onclick="downloadIcon(512)">Download 512x512</button>
+        <button class="download-btn" onclick="downloadFavicon()">Download Favicon</button>
+    </div>
+
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Click the download buttons to generate your portfolio icons</li>
+            <li>Replace the following files in your web folder:
+                <ul>
+                    <li><code>favicon.png</code> - Use the favicon download</li>
+                    <li><code>icons/Icon-192.png</code> - Use the 192x192 download</li>
+                    <li><code>icons/Icon-512.png</code> - Use the 512x512 download</li>
+                </ul>
+            </li>
+            <li>Copy the downloaded files to replace the existing Flutter icons</li>
+            <li>Rebuild your Flutter web app: <code>flutter build web</code></li>
+        </ol>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        function createIcon(size) {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = size;
+            canvas.height = size;
+            
+            // Create gradient
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#6366F1');
+            gradient.addColorStop(0.5, '#8B5CF6');
+            gradient.addColorStop(1, '#EC4899');
+            
+            // Draw background
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, size, size);
+            
+            // Add subtle pattern
+            ctx.fillStyle = 'rgba(255,255,255,0.1)';
+            for (let i = 0; i < size; i += 20) {
+                ctx.fillRect(i, 0, 1, size);
+                ctx.fillRect(0, i, size, 1);
+            }
+            
+            // Draw "P" for Portfolio
+            ctx.fillStyle = 'white';
+            ctx.font = `bold ${size * 0.6}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.shadowColor = 'rgba(0,0,0,0.3)';
+            ctx.shadowBlur = 4;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+            
+            ctx.fillText('P', size/2, size/2);
+            
+            // Add subtle border
+            ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+            ctx.lineWidth = size * 0.02;
+            ctx.strokeRect(size * 0.05, size * 0.05, size * 0.9, size * 0.9);
+        }
+        
+        function downloadIcon(size) {
+            createIcon(size);
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = `portfolio-icon-${size}.png`;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        function downloadFavicon() {
+            createIcon(32);
+            const canvas = document.getElementById('canvas');
+            const link = document.createElement('a');
+            link.download = 'favicon.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Generate initial preview
+        createIcon(192);
+    </script>
+</body>
+</html>
