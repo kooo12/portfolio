@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/project.dart';
@@ -117,10 +118,13 @@ class ProjectsSection extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         int crossAxisCount = 1;
+        double childAspectRatio = 0.95;
         if (constraints.maxWidth > AppDimensions.desktopBreakpoint) {
           crossAxisCount = 2;
+          childAspectRatio = 1.4;
         } else if (constraints.maxWidth > AppDimensions.tabletBreakpoint) {
           crossAxisCount = 2;
+          childAspectRatio = 1.4;
         }
 
         return GridView.builder(
@@ -130,7 +134,7 @@ class ProjectsSection extends StatelessWidget {
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: AppDimensions.spacingXL,
             mainAxisSpacing: AppDimensions.spacingXL,
-            childAspectRatio: 1.2,
+            childAspectRatio: childAspectRatio,
           ),
           itemCount: projects.length,
           itemBuilder: (context, index) {
@@ -142,179 +146,191 @@ class ProjectsSection extends StatelessWidget {
   }
 
   Widget _buildProjectCard(BuildContext context, Project project, int index) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        border: Border.all(
-          color: Theme.of(context).dividerColor.withOpacity(0.1),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+    return InkWell(
+      onTap: () => Get.toNamed('/project/${project.id}'),
+      borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          border: Border.all(
+            color: Theme.of(context).dividerColor.withOpacity(0.1),
           ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Project Image
-            Expanded(
-              flex: 3,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(project.imageUrl),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Project Image
+              Expanded(
+                flex: 3,
                 child: Container(
+                  width: double.infinity,
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Colors.transparent,
-                        Colors.black.withOpacity(0.7),
-                      ],
+                    image: DecorationImage(
+                      image: NetworkImage(project.imageUrl),
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  child: Stack(
-                    children: [
-                      // Category Badge
-                      Positioned(
-                        top: AppDimensions.spacingM,
-                        left: AppDimensions.spacingM,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppDimensions.spacingM,
-                            vertical: AppDimensions.spacingS,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryLight.withOpacity(0.9),
-                            borderRadius:
-                                BorderRadius.circular(AppDimensions.radiusM),
-                          ),
-                          child: Text(
-                            project.category,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.transparent,
+                          Colors.black.withOpacity(0.7),
+                        ],
+                      ),
+                    ),
+                    child: Stack(
+                      children: [
+                        // Category Badge
+                        Positioned(
+                          top: AppDimensions.spacingM,
+                          left: AppDimensions.spacingM,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppDimensions.spacingM,
+                              vertical: AppDimensions.spacingS,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryLight.withOpacity(0.9),
+                              borderRadius:
+                                  BorderRadius.circular(AppDimensions.radiusM),
+                            ),
+                            child: Text(
+                              project.category,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                           ),
                         ),
+
+                        // Action Buttons
+                        Positioned(
+                          bottom: AppDimensions.spacingM,
+                          right: AppDimensions.spacingM,
+                          child: Row(
+                            children: [
+                              if (project.githubUrl != null)
+                                _buildActionButton(
+                                  context,
+                                  FontAwesomeIcons.github,
+                                  project.githubUrl!,
+                                  'View Code',
+                                ),
+                              const SizedBox(width: AppDimensions.spacingS),
+                              if (project.liveUrl != null)
+                                _buildActionButton(
+                                  context,
+                                  FontAwesomeIcons.link,
+                                  project.liveUrl!,
+                                  'Live Demo',
+                                ),
+                              const SizedBox(width: AppDimensions.spacingS),
+                              if (project.playStoreUrl != null)
+                                _buildActionButton(
+                                  context,
+                                  FontAwesomeIcons.googlePlay,
+                                  project.playStoreUrl!,
+                                  'Play Store',
+                                ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              // Project Info
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppDimensions.spacingL),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: AppDimensions.spacingS),
+                      // Project Title
+                      Text(
+                        project.title,
+                        style:
+                            Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
 
-                      // Action Buttons
-                      Positioned(
-                        bottom: AppDimensions.spacingM,
-                        right: AppDimensions.spacingM,
-                        child: Row(
-                          children: [
-                            if (project.githubUrl != null)
-                              _buildActionButton(
-                                context,
-                                FontAwesomeIcons.github,
-                                project.githubUrl!,
-                                'View Code',
+                      const SizedBox(height: AppDimensions.spacingS),
+
+                      // Project Description
+                      Text(
+                        project.description,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.color
+                                  ?.withOpacity(0.7),
+                              height: 1.4,
+                            ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+
+                      const SizedBox(height: AppDimensions.spacingM),
+
+                      // Technologies
+                      Wrap(
+                        spacing: AppDimensions.spacingS,
+                        runSpacing: AppDimensions.spacingS,
+                        children: project.technologies.map((tech) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppDimensions.spacingS,
+                              vertical: AppDimensions.spacingXS,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryLight.withOpacity(0.1),
+                              borderRadius:
+                                  BorderRadius.circular(AppDimensions.radiusS),
+                              border: Border.all(
+                                color: AppColors.primaryLight.withOpacity(0.3),
                               ),
-                            const SizedBox(width: AppDimensions.spacingS),
-                            if (project.liveUrl != null)
-                              _buildActionButton(
-                                context,
-                                FontAwesomeIcons.link,
-                                project.liveUrl!,
-                                'Live Demo',
+                            ),
+                            child: Text(
+                              tech,
+                              style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryLight,
                               ),
-                          ],
-                        ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ],
                   ),
                 ),
               ),
-            ),
-
-            // Project Info
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppDimensions.spacingL),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: AppDimensions.spacingS),
-                    // Project Title
-                    Text(
-                      project.title,
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-
-                    const SizedBox(height: AppDimensions.spacingS),
-
-                    // Project Description
-                    Text(
-                      project.description,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context)
-                                .textTheme
-                                .bodyLarge
-                                ?.color
-                                ?.withOpacity(0.7),
-                            height: 1.4,
-                          ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-
-                    const SizedBox(height: AppDimensions.spacingM),
-
-                    // Technologies
-                    Wrap(
-                      spacing: AppDimensions.spacingS,
-                      runSpacing: AppDimensions.spacingS,
-                      children: project.technologies.take(3).map((tech) {
-                        return Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppDimensions.spacingS,
-                            vertical: AppDimensions.spacingXS,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryLight.withOpacity(0.1),
-                            borderRadius:
-                                BorderRadius.circular(AppDimensions.radiusS),
-                            border: Border.all(
-                              color: AppColors.primaryLight.withOpacity(0.3),
-                            ),
-                          ),
-                          child: Text(
-                            tech,
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.primaryLight,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     )

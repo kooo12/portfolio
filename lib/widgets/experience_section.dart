@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
@@ -142,17 +143,11 @@ class ExperienceSection extends StatelessWidget {
                     children: [
                       // Company Logo
                       if (experience.logoUrl != null)
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(AppDimensions.radiusM),
-                            image: DecorationImage(
-                              image: NetworkImage(experience.logoUrl!),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                        CachedNetworkImage(
+                          width: 40,
+                          height: 40,
+                          imageUrl: experience.logoUrl!,
+                          fit: BoxFit.cover,
                         ),
 
                       if (experience.logoUrl != null)
@@ -241,7 +236,7 @@ class ExperienceSection extends StatelessWidget {
                             height: 6,
                             margin: const EdgeInsets.only(
                                 top: 8, right: AppDimensions.spacingM),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: AppColors.primaryLight,
                               shape: BoxShape.circle,
                             ),
@@ -260,7 +255,7 @@ class ExperienceSection extends StatelessWidget {
                         ],
                       ),
                     );
-                  }).toList(),
+                  }),
                 ],
               ),
             ),

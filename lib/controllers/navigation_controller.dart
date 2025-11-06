@@ -81,7 +81,7 @@ class NavigationController extends GetxController {
 
             if (index == 0 || index == 1 || index == 2) {
               final sectionNames = ['Hero', 'About', 'Skills'];
-              print(
+              debugPrint(
                   '${sectionNames[index]} - Top: ${sectionTop.toStringAsFixed(1)}, '
                   'Distance: ${distance.toStringAsFixed(1)}, '
                   'Visible: $isVisible');
@@ -97,7 +97,7 @@ class NavigationController extends GetxController {
     }
 
     if (newIndex != currentIndex.value) {
-      print(
+      debugPrint(
           'Switching to section: $newIndex (distance: ${closestDistance.toStringAsFixed(1)})');
       currentIndex.value = newIndex;
     }

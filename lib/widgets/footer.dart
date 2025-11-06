@@ -21,9 +21,12 @@ class Footer extends StatelessWidget {
         ),
       ),
       child: Container(
-        constraints: const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
-        margin: const EdgeInsets.symmetric(horizontal: AppDimensions.containerPadding),
-        padding: const EdgeInsets.symmetric(vertical: AppDimensions.spacingXXXL),
+        constraints:
+            const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
+        margin: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.containerPadding),
+        padding:
+            const EdgeInsets.symmetric(vertical: AppDimensions.spacingXXXL),
         child: Column(
           children: [
             // Footer Content
@@ -36,23 +39,27 @@ class Footer extends StatelessWidget {
                 }
               },
             ),
-            
+
             const SizedBox(height: AppDimensions.spacingXXXL),
-            
+
             // Divider
             Container(
               height: 1,
               color: Theme.of(context).dividerColor.withOpacity(0.2),
             ),
-            
+
             const SizedBox(height: AppDimensions.spacingXL),
-            
+
             // Copyright
             Text(
               '© 2024 Portfolio. Built with Flutter and GetX.',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.6),
-              ),
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.color
+                        ?.withOpacity(0.6),
+                  ),
               textAlign: TextAlign.center,
             ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
           ],
@@ -74,41 +81,55 @@ class Footer extends StatelessWidget {
               Text(
                 'Portfolio',
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryLight,
-                ),
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryLight,
+                    ),
               ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2),
-              
+
               const SizedBox(height: AppDimensions.spacingL),
-              
+
               Text(
                 'A passionate Flutter developer creating beautiful, responsive applications for web and mobile platforms.',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
-                  height: 1.6,
-                ),
-              ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: -0.2),
-              
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.color
+                          ?.withOpacity(0.7),
+                      height: 1.6,
+                    ),
+              )
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 200.ms)
+                  .slideY(begin: -0.2),
+
               const SizedBox(height: AppDimensions.spacingXL),
-              
+
               // Social Links
               Row(
                 children: [
-                  _buildSocialIcon(context, FontAwesomeIcons.github, 'https://github.com'),
+                  _buildSocialIcon(
+                      context, FontAwesomeIcons.github, 'https://github.com'),
                   const SizedBox(width: AppDimensions.spacingM),
-                  _buildSocialIcon(context, FontAwesomeIcons.linkedin, 'https://linkedin.com'),
+                  _buildSocialIcon(context, FontAwesomeIcons.linkedin,
+                      'https://linkedin.com'),
                   const SizedBox(width: AppDimensions.spacingM),
-                  _buildSocialIcon(context, FontAwesomeIcons.twitter, 'https://twitter.com'),
+                  _buildSocialIcon(
+                      context, FontAwesomeIcons.twitter, 'https://twitter.com'),
                   const SizedBox(width: AppDimensions.spacingM),
-                  _buildSocialIcon(context, FontAwesomeIcons.instagram, 'https://instagram.com'),
+                  _buildSocialIcon(context, FontAwesomeIcons.facebook,
+                      'https://facebook.com'),
                 ],
-              ).animate().fadeIn(duration: 600.ms, delay: 400.ms).slideY(begin: -0.2),
+              )
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 400.ms)
+                  .slideY(begin: -0.2),
             ],
           ),
         ),
-        
+
         const SizedBox(width: AppDimensions.spacingXXXL),
-        
+
         // Right - Quick Links
         Expanded(
           flex: 1,
@@ -118,16 +139,29 @@ class Footer extends StatelessWidget {
               Text(
                 'Quick Links',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-              ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: -0.2),
-              
+                      fontWeight: FontWeight.bold,
+                    ),
+              )
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 200.ms)
+                  .slideY(begin: -0.2),
               const SizedBox(height: AppDimensions.spacingL),
-              
-              _buildFooterLink(context, 'About', () {}).animate().fadeIn(duration: 600.ms, delay: 300.ms).slideY(begin: -0.2),
-              _buildFooterLink(context, 'Skills', () {}).animate().fadeIn(duration: 600.ms, delay: 400.ms).slideY(begin: -0.2),
-              _buildFooterLink(context, 'Projects', () {}).animate().fadeIn(duration: 600.ms, delay: 500.ms).slideY(begin: -0.2),
-              _buildFooterLink(context, 'Contact', () {}).animate().fadeIn(duration: 600.ms, delay: 600.ms).slideY(begin: -0.2),
+              _buildFooterLink(context, 'About', () {})
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 300.ms)
+                  .slideY(begin: -0.2),
+              _buildFooterLink(context, 'Skills', () {})
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 400.ms)
+                  .slideY(begin: -0.2),
+              _buildFooterLink(context, 'Projects', () {})
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 500.ms)
+                  .slideY(begin: -0.2),
+              _buildFooterLink(context, 'Contact', () {})
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 600.ms)
+                  .slideY(begin: -0.2),
             ],
           ),
         ),
@@ -142,74 +176,99 @@ class Footer extends StatelessWidget {
         Text(
           'Portfolio',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryLight,
-          ),
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryLight,
+              ),
         ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2),
-        
+
         const SizedBox(height: AppDimensions.spacingL),
-        
+
         Text(
           'A passionate Flutter developer creating beautiful, responsive applications for web and mobile platforms.',
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
-            height: 1.6,
-          ),
+                color: Theme.of(context)
+                    .textTheme
+                    .bodyLarge
+                    ?.color
+                    ?.withOpacity(0.7),
+                height: 1.6,
+              ),
           textAlign: TextAlign.center,
         ).animate().fadeIn(duration: 600.ms, delay: 200.ms).slideY(begin: -0.2),
-        
+
         const SizedBox(height: AppDimensions.spacingXL),
-        
+
         // Social Links
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildSocialIcon(context, FontAwesomeIcons.github, 'https://github.com'),
+            _buildSocialIcon(
+                context, FontAwesomeIcons.github, 'https://github.com'),
             const SizedBox(width: AppDimensions.spacingM),
-            _buildSocialIcon(context, FontAwesomeIcons.linkedin, 'https://linkedin.com'),
+            _buildSocialIcon(
+                context, FontAwesomeIcons.linkedin, 'https://linkedin.com'),
             const SizedBox(width: AppDimensions.spacingM),
-            _buildSocialIcon(context, FontAwesomeIcons.twitter, 'https://twitter.com'),
+            _buildSocialIcon(
+                context, FontAwesomeIcons.twitter, 'https://twitter.com'),
             const SizedBox(width: AppDimensions.spacingM),
-            _buildSocialIcon(context, FontAwesomeIcons.instagram, 'https://instagram.com'),
+            _buildSocialIcon(
+                context, FontAwesomeIcons.facebook, 'https://facebook.com'),
           ],
         ).animate().fadeIn(duration: 600.ms, delay: 400.ms).slideY(begin: -0.2),
-        
+
         const SizedBox(height: AppDimensions.spacingXXXL),
-        
+
         // Quick Links
         Text(
           'Quick Links',
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
+                fontWeight: FontWeight.bold,
+              ),
         ).animate().fadeIn(duration: 600.ms, delay: 500.ms).slideY(begin: -0.2),
-        
+
         const SizedBox(height: AppDimensions.spacingL),
-        
+
         Wrap(
           spacing: AppDimensions.spacingM,
           runSpacing: AppDimensions.spacingM,
           alignment: WrapAlignment.center,
           children: [
-            _buildFooterLink(context, 'About', () {}).animate().fadeIn(duration: 600.ms, delay: 600.ms).slideY(begin: -0.2),
-            _buildFooterLink(context, 'Skills', () {}).animate().fadeIn(duration: 600.ms, delay: 700.ms).slideY(begin: -0.2),
-            _buildFooterLink(context, 'Projects', () {}).animate().fadeIn(duration: 600.ms, delay: 800.ms).slideY(begin: -0.2),
-            _buildFooterLink(context, 'Contact', () {}).animate().fadeIn(duration: 600.ms, delay: 900.ms).slideY(begin: -0.2),
+            _buildFooterLink(context, 'About', () {})
+                .animate()
+                .fadeIn(duration: 600.ms, delay: 600.ms)
+                .slideY(begin: -0.2),
+            _buildFooterLink(context, 'Skills', () {})
+                .animate()
+                .fadeIn(duration: 600.ms, delay: 700.ms)
+                .slideY(begin: -0.2),
+            _buildFooterLink(context, 'Projects', () {})
+                .animate()
+                .fadeIn(duration: 600.ms, delay: 800.ms)
+                .slideY(begin: -0.2),
+            _buildFooterLink(context, 'Contact', () {})
+                .animate()
+                .fadeIn(duration: 600.ms, delay: 900.ms)
+                .slideY(begin: -0.2),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildFooterLink(BuildContext context, String text, VoidCallback onTap) {
+  Widget _buildFooterLink(
+      BuildContext context, String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Text(
         text,
         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-          color: Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.7),
-          fontWeight: FontWeight.w500,
-        ),
+              color: Theme.of(context)
+                  .textTheme
+                  .bodyLarge
+                  ?.color
+                  ?.withOpacity(0.7),
+              fontWeight: FontWeight.w500,
+            ),
       ),
     );
   }

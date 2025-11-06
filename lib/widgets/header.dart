@@ -6,7 +6,7 @@ import '../controllers/theme_controller.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_dimensions.dart';
 
-class Header extends StatelessWidget {
+class Header extends StatelessWidget implements PreferredSizeWidget {
   final NavigationController navigationController;
   final ThemeController themeController;
 
@@ -181,4 +181,7 @@ class Header extends StatelessWidget {
           },
         ));
   }
+
+  @override
+  Size get preferredSize => const Size.fromHeight(AppDimensions.headerHeight);
 }

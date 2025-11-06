@@ -177,7 +177,7 @@ class ContactSection extends StatelessWidget {
 
         _buildContactInfo(
           context,
-          FontAwesomeIcons.mapMarkerAlt,
+          FontAwesomeIcons.mapPin,
           'Location',
           personalInfo.location,
           null,
@@ -298,8 +298,8 @@ class ContactSection extends StatelessWidget {
         _buildSocialLink(context, FontAwesomeIcons.twitter,
             personalInfo.socialLinks['twitter']!),
         const SizedBox(width: AppDimensions.spacingM),
-        _buildSocialLink(context, FontAwesomeIcons.instagram,
-            personalInfo.socialLinks['instagram']!),
+        _buildSocialLink(context, FontAwesomeIcons.facebook,
+            personalInfo.socialLinks['facebook']!),
       ],
     );
   }
@@ -370,7 +370,7 @@ class ContactSection extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                borderSide: BorderSide(color: AppColors.primaryLight),
+                borderSide: const BorderSide(color: AppColors.primaryLight),
               ),
             ),
           ),
@@ -386,7 +386,7 @@ class ContactSection extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                borderSide: BorderSide(color: AppColors.primaryLight),
+                borderSide: const BorderSide(color: AppColors.primaryLight),
               ),
             ),
           ),
@@ -403,7 +403,7 @@ class ContactSection extends StatelessWidget {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                borderSide: BorderSide(color: AppColors.primaryLight),
+                borderSide: const BorderSide(color: AppColors.primaryLight),
               ),
             ),
           ),

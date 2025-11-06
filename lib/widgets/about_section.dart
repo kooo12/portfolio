@@ -247,6 +247,8 @@ class AboutSection extends StatelessWidget {
           _buildSkillChip(context, 'REST API', themeCtrl),
           _buildSkillChip(context, 'Git', themeCtrl),
           _buildSkillChip(context, 'GetX', themeCtrl),
+          _buildSkillChip(context, 'BLoC', themeCtrl),
+          _buildSkillChip(context, 'Provider', themeCtrl),
           _buildSkillChip(context, 'Mobile Development', themeCtrl),
         ],
       ),

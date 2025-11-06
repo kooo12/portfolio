@@ -257,7 +257,7 @@ class AnimatedBackground extends StatelessWidget {
             ),
 
             // Main content
-            child,
+            Center(child: child),
           ],
         ),
       ),

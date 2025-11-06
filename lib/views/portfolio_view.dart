@@ -47,11 +47,9 @@ class PortfolioView extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Header(
-          navigationController: navigationController,
-          themeController: themeController,
-        ),
+      appBar: Header(
+        navigationController: navigationController,
+        themeController: themeController,
       ),
       body: Obx(() => portfolioController.isLoading.value
           ? const AnimatedBackground(

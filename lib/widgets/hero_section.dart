@@ -77,37 +77,39 @@ class HeroSection extends StatelessWidget {
                     horizontal: AppDimensions.spacingL,
                     vertical: AppDimensions.spacingM,
                   ),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.transparent,
-                        const Color(0xFF6366F1)
-                            .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
-                        const Color(0xFF8B5CF6)
-                            .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
-                        const Color(0xFFEC4899)
-                            .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
-                        Colors.transparent,
-                      ],
-                      stops: const [0.0, 0.2, 0.5, 0.8, 1.0],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                    ),
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryLight.withOpacity(0.3),
-                        blurRadius: 20,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
+                  // decoration: BoxDecoration(
+                  // gradient: LinearGradient(
+                  //   colors: [
+                  //     Colors.transparent,
+                  //     const Color(0xFF6366F1)
+                  //         .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
+                  //     const Color(0xFF8B5CF6)
+                  //         .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
+                  //     const Color(0xFFEC4899)
+                  //         .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
+                  //     Colors.transparent,
+                  //   ],
+                  //   stops: const [0.0, 0.2, 0.5, 0.8, 1.0],
+                  //   begin: Alignment.centerLeft,
+                  //   end: Alignment.centerRight,
+                  // ),
+                  //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                  //   boxShadow: [
+                  //     BoxShadow(
+                  //       color: AppColors.primaryLight.withOpacity(0.3),
+                  //       blurRadius: 20,
+                  //       offset: const Offset(0, 8),
+                  //     ),
+                  //   ],
+                  // ),
                   child: Text(
                     personalInfo.name,
                     style: themeCtrl.activeTheme.textTheme.displayLarge
                         ?.copyWith(
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: themeCtrl.isDarkMode
+                                ? Colors.white70
+                                : Colors.black87,
                             fontSize: 50),
                   ),
                 )
@@ -185,18 +187,24 @@ class HeroSection extends StatelessWidget {
             flex: 1,
             child: Center(
               child: Container(
-                width: 400,
-                height: 400,
+                width: 500,
+                height: 500,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: const LinearGradient(
-                    colors: AppColors.primaryGradient,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
+                  // gradient: LinearGradient(
+                  //   colors: [
+                  //     Colors.transparent,
+                  //     Color(0xFF6366F1).withOpacity(0.1),
+                  //     Color(0xFF8B5CF6).withOpacity(0.1),
+                  //     Color(0xFFEC4899).withOpacity(0.6),
+                  //     Colors.transparent,
+                  //   ],
+                  //   begin: Alignment.center,
+                  //   end: Alignment.center,
+                  // ),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primaryLight.withOpacity(0.3),
+                      color: AppColors.primaryLight.withOpacity(0.1),
                       blurRadius: 50,
                       offset: const Offset(0, 20),
                     ),
@@ -206,7 +214,7 @@ class HeroSection extends StatelessWidget {
                   padding: const EdgeInsets.all(4),
                   child: Container(
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
+                      // shape: BoxShape.circle,
                       image: DecorationImage(
                         image: AssetImage(personalInfo.imageUrl),
                         fit: BoxFit.cover,
@@ -242,18 +250,24 @@ class HeroSection extends StatelessWidget {
       children: [
         // Profile Image
         Container(
-          width: 250,
-          height: 250,
+          width: 300,
+          height: 300,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: const LinearGradient(
-              colors: AppColors.primaryGradient,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+            // gradient: const LinearGradient(
+            //   colors: [
+            //     Colors.transparent,
+            //     Color(0xFF6366F1),
+            //     Color(0xFF8B5CF6),
+            //     Color(0xFFEC4899),
+            //     Colors.transparent,
+            //   ],
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            // ),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primaryLight.withOpacity(0.3),
+                color: AppColors.primaryLight.withOpacity(0.2),
                 blurRadius: 50,
                 offset: const Offset(0, 20),
               ),
@@ -263,7 +277,7 @@ class HeroSection extends StatelessWidget {
             padding: const EdgeInsets.all(4),
             child: Container(
               decoration: BoxDecoration(
-                shape: BoxShape.circle,
+                // shape: BoxShape.circle,
                 image: DecorationImage(
                   image: AssetImage(personalInfo.imageUrl),
                   fit: BoxFit.cover,
@@ -304,36 +318,38 @@ class HeroSection extends StatelessWidget {
                   horizontal: AppDimensions.spacingL,
                   vertical: AppDimensions.spacingM,
                 ),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.transparent,
-                      const Color(0xFF6366F1)
-                          .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
-                      const Color(0xFF8B5CF6)
-                          .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
-                      const Color(0xFFEC4899)
-                          .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
-                      Colors.transparent,
-                    ],
-                    stops: const [0.0, 0.2, 0.5, 0.8, 1.0],
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                  ),
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.primaryLight.withOpacity(0.3),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
+                // decoration: BoxDecoration(
+                //   gradient: LinearGradient(
+                //     colors: [
+                //       Colors.transparent,
+                //       const Color(0xFF6366F1)
+                //           .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
+                //       const Color(0xFF8B5CF6)
+                //           .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
+                //       const Color(0xFFEC4899)
+                //           .withOpacity(themeCtrl.isDarkMode ? 0.3 : 0.1),
+                //       Colors.transparent,
+                //     ],
+                //     stops: const [0.0, 0.2, 0.5, 0.8, 1.0],
+                //     begin: Alignment.centerLeft,
+                //     end: Alignment.centerRight,
+                //   ),
+                //   borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                //   boxShadow: [
+                //     BoxShadow(
+                //       color: AppColors.primaryLight.withOpacity(0.3),
+                //       blurRadius: 20,
+                //       offset: const Offset(0, 8),
+                //     ),
+                //   ],
+                // ),
                 child: Text(
                   personalInfo.name,
                   style: Theme.of(context).textTheme.displayMedium?.copyWith(
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: themeCtrl.isDarkMode
+                            ? Colors.white70
+                            : Colors.grey[800],
                       ),
                   textAlign: TextAlign.center,
                 ),
@@ -465,7 +481,7 @@ class HeroSection extends StatelessWidget {
             FontAwesomeIcons.xTwitter, personalInfo.socialLinks['twitter']!),
         const SizedBox(width: AppDimensions.spacingM),
         _buildSocialIcon(
-            FontAwesomeIcons.instagram, personalInfo.socialLinks['instagram']!),
+            FontAwesomeIcons.facebook, personalInfo.socialLinks['facebook']!),
       ],
     );
   }

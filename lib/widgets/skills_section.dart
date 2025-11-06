@@ -70,9 +70,8 @@ class SkillsSection extends StatelessWidget {
               .slideY(begin: -0.2),
 
           SizedBox(
-              height: isMobile
-                  ? AppDimensions.spacingXL
-                  : AppDimensions.spacingXXXL),
+              height:
+                  isMobile ? AppDimensions.spacingXL : AppDimensions.spacingXL),
 
           // Skills by Category
           Obx(() {

@@ -20,8 +20,8 @@ class AppDimensions {
   static const double containerPadding = 24.0;
 
   // Header Heights
-  static const double headerHeight = 80.0;
-  static const double headerHeightMobile = 60.0;
+  static const double headerHeight = 60.0;
+  static const double headerHeightMobile = 40.0;
 
   // Breakpoints
   static const mobileBreakpoint = 768.0;
