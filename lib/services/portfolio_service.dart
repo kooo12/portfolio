@@ -7,7 +7,7 @@ class PortfolioService {
   static PersonalInfo getPersonalInfo() {
     return PersonalInfo(
       name: "Aung Ko Oo",
-      title: "Flutter Frontend Developer",
+      title: "Flutter Developer",
       bio:
           "Passionate Flutter developer with 3+ years of experience creating beautiful, responsive mobile and web applications. I love turning complex problems into simple, elegant solutions.",
       email: "agkooo.ako36@gmail.com",

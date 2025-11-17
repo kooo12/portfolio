@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 
 class NavigationController extends GetxController {
@@ -6,6 +7,7 @@ class NavigationController extends GetxController {
 
   var currentIndex = 0.obs;
   var isScrolling = false.obs;
+  final List<RxInt> sectionAnimationTicks = List.generate(6, (_) => 0.obs);
 
   GlobalKey? heroKey;
   GlobalKey? aboutKey;
@@ -18,6 +20,7 @@ class NavigationController extends GetxController {
   void onInit() {
     super.onInit();
     scrollController.addListener(_onScroll);
+    triggerSectionAnimation(0);
   }
 
   @override
@@ -100,6 +103,7 @@ class NavigationController extends GetxController {
       debugPrint(
           'Switching to section: $newIndex (distance: ${closestDistance.toStringAsFixed(1)})');
       currentIndex.value = newIndex;
+      triggerSectionAnimation(newIndex);
     }
   }
 
@@ -134,16 +138,33 @@ class NavigationController extends GetxController {
     }
 
     if (targetKey?.currentContext != null) {
-      Scrollable.ensureVisible(
-        targetKey!.currentContext!,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-        alignment: 0.1, // Offset for header
-      );
+      final context = targetKey!.currentContext!;
+      final renderBox = context.findRenderObject() as RenderBox?;
+      if (renderBox != null) {
+        final viewport = RenderAbstractViewport.of(renderBox);
+        final reveal = viewport.getOffsetToReveal(renderBox, 0.0);
+        final targetOffset = (reveal.offset) - 120;
+        final clampedOffset = targetOffset.clamp(
+          scrollController.position.minScrollExtent,
+          scrollController.position.maxScrollExtent,
+        );
+
+        scrollController.animateTo(
+          clampedOffset.toDouble(),
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeInOutCubic,
+        );
+      }
     }
 
     Future.delayed(const Duration(milliseconds: 600), () {
       isScrolling.value = false;
     });
+  }
+
+  void triggerSectionAnimation(int index) {
+    if (index >= 0 && index < sectionAnimationTicks.length) {
+      sectionAnimationTicks[index].value++;
+    }
   }
 }

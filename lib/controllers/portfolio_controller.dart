@@ -12,6 +12,7 @@ class PortfolioController extends GetxController {
   var experiences = <Experience>[].obs;
   var isLoading = true.obs;
   var selectedProjectCategory = 'All'.obs;
+  var hoveredSkillName = ''.obs;
 
   @override
   void onInit() {
@@ -22,7 +23,7 @@ class PortfolioController extends GetxController {
   void loadPortfolioData() {
     isLoading.value = true;
 
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(seconds: 4), () {
       personalInfo.value = PortfolioService.getPersonalInfo();
       projects.value = PortfolioService.getProjects();
       skills.value = PortfolioService.getSkills();
@@ -56,5 +57,13 @@ class PortfolioController extends GetxController {
 
   List<String> get skillCategories {
     return skills.map((skill) => skill.category).toSet().toList();
+  }
+
+  void setHoveredSkill(String? skillName) {
+    hoveredSkillName.value = skillName ?? '';
+  }
+
+  bool isSkillHovered(String skillName) {
+    return hoveredSkillName.value == skillName;
   }
 }

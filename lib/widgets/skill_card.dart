@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:protfolio/utils/app_dimensions.dart';
+import '../controllers/portfolio_controller.dart';
 import '../models/skill.dart';
 
 class SkillCard extends StatelessWidget {
-  final Skill skill;
-  final int delay;
-
-  const SkillCard({
+  SkillCard({
     super.key,
     required this.skill,
     required this.delay,
   });
+
+  final Skill skill;
+  final int delay;
+  final PortfolioController portfolioController =
+      Get.find<PortfolioController>();
 
   Map<String, dynamic> _getSkillInfo(String skillName) {
     switch (skillName.toLowerCase()) {
@@ -204,296 +208,115 @@ class SkillCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final skillInfo = _getSkillInfo(skill.name);
-    // final gradientColors = skillInfo['bgGradient'] as List<Color>;
     final primaryColor = skillInfo['primaryColor'] as Color;
     final accentColor = skillInfo['accentColor'] as Color;
-    final levelColor = skillInfo['levelColor'] as Color;
-    final years = skillInfo['yearsExp'] as int;
-    final description = skillInfo['description'] as String;
+    final icon = skillInfo['icon'] as IconData;
+    final isMobile =
+        MediaQuery.of(context).size.width < AppDimensions.mobileBreakpoint;
+    final baseColor = Theme.of(context).cardColor.withOpacity(0.05);
+    final hoverColor = primaryColor.withOpacity(0.18);
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            primaryColor.withOpacity(0.05),
-            primaryColor.withOpacity(0.02),
-            Colors.white.withOpacity(0.8),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: primaryColor.withOpacity(0.1),
-          width: 1,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: primaryColor.withOpacity(0.08),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-            spreadRadius: 0,
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-            spreadRadius: 0,
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: () => _showSkillDetails(context, skill),
-          borderRadius: BorderRadius.circular(24),
-          splashColor: primaryColor.withOpacity(0.1),
-          highlightColor: primaryColor.withOpacity(0.05),
-          child: Container(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.width >
-                    AppDimensions.mobileBreakpoint
-                ? 16
-                : 12),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Top Section - Icon and Name
-                Container(
-                  width: MediaQuery.of(context).size.width >
-                          AppDimensions.mobileBreakpoint
-                      ? 48
-                      : 40,
-                  height: MediaQuery.of(context).size.width >
-                          AppDimensions.mobileBreakpoint
-                      ? 48
-                      : 40,
-                  decoration: BoxDecoration(
-                    gradient: RadialGradient(
-                      colors: [
-                        primaryColor,
-                        primaryColor.withOpacity(0.8),
-                        primaryColor.withOpacity(0.6),
-                      ],
-                      stops: const [0.0, 0.7, 1.0],
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: primaryColor.withOpacity(0.3),
-                        blurRadius: 16,
-                        offset: const Offset(0, 6),
-                        spreadRadius: 0,
-                      ),
-                      BoxShadow(
-                        color: accentColor.withOpacity(0.2),
-                        blurRadius: 8,
-                        offset: const Offset(0, 3),
-                        spreadRadius: 0,
-                      ),
-                    ],
+    return MouseRegion(
+      onEnter: (_) => portfolioController.setHoveredSkill(skill.name),
+      onExit: (_) => portfolioController.setHoveredSkill(null),
+      child: GestureDetector(
+        onTap: () => _showSkillDetails(context, skill),
+        child: Obx(() {
+          final isHovered =
+              isMobile ? true : portfolioController.isSkillHovered(skill.name);
+          final showLabel = isHovered;
+
+          return AnimatedScale(
+            scale: isHovered ? 1.04 : 1.0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutBack,
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOut,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: isHovered ? hoverColor : baseColor,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+                border: Border.all(
+                  color: isHovered
+                      ? primaryColor.withOpacity(0.7)
+                      : Colors.white.withOpacity(0.05),
+                  width: 1.2,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.25),
+                    blurRadius: isHovered ? 22 : 10,
+                    offset: Offset(0, isHovered ? 16 : 8),
                   ),
-                  child: Center(
+                  if (isHovered)
+                    BoxShadow(
+                      color: accentColor.withOpacity(0.45),
+                      blurRadius: 30,
+                      spreadRadius: 6,
+                    ),
+                ],
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Align(
+                    alignment: Alignment.center,
                     child: FaIcon(
-                      skillInfo['icon'] as IconData,
+                      icon,
+                      size: isMobile ? 28 : 34,
                       color: Colors.white,
-                      size: MediaQuery.of(context).size.width >
-                              AppDimensions.mobileBreakpoint
-                          ? 22
-                          : 18,
                     ),
                   ),
-                ),
-
-                SizedBox(
-                    height: MediaQuery.of(context).size.width >
-                            AppDimensions.mobileBreakpoint
-                        ? 12
-                        : 8),
-
-                // Skill Name with gradient text effect
-                ShaderMask(
-                  shaderCallback: (bounds) => LinearGradient(
-                    colors: [primaryColor, accentColor],
-                  ).createShader(bounds),
-                  child: Text(
-                    skill.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: MediaQuery.of(context).size.width >
-                              AppDimensions.mobileBreakpoint
-                          ? 14
-                          : 12,
-                      color: Colors.white,
-                      letterSpacing: -0.3,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-
-                SizedBox(
-                    height: MediaQuery.of(context).size.width >
-                            AppDimensions.mobileBreakpoint
-                        ? 6
-                        : 4),
-
-                // Description
-                Text(
-                  description,
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.color
-                        ?.withOpacity(0.6),
-                    fontSize: MediaQuery.of(context).size.width >
-                            AppDimensions.mobileBreakpoint
-                        ? 10
-                        : 9,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                SizedBox(
-                    height: MediaQuery.of(context).size.width >
-                            AppDimensions.mobileBreakpoint
-                        ? 10
-                        : 9),
-                // Skill Level Badge - Responsive
-                Container(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width >
-                              AppDimensions.mobileBreakpoint
-                          ? 10
-                          : 8,
-                      vertical: MediaQuery.of(context).size.width >
-                              AppDimensions.mobileBreakpoint
-                          ? 4
-                          : 3),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [levelColor, levelColor.withOpacity(0.8)],
-                    ),
-                    borderRadius: BorderRadius.circular(16),
-                    boxShadow: [
-                      BoxShadow(
-                        color: levelColor.withOpacity(0.3),
-                        blurRadius: 6,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Text(
-                    skillInfo['level'],
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: MediaQuery.of(context).size.width >
-                              AppDimensions.mobileBreakpoint
-                          ? 10
-                          : 9,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                ),
-
-                SizedBox(
-                    height: MediaQuery.of(context).size.width >
-                            AppDimensions.mobileBreakpoint
-                        ? 10
-                        : 9),
-
-                // Modern Progress Ring - Responsive
-                SizedBox(
-                  width: MediaQuery.of(context).size.width >
-                          AppDimensions.mobileBreakpoint
-                      ? 50
-                      : 40,
-                  height: MediaQuery.of(context).size.width >
-                          AppDimensions.mobileBreakpoint
-                      ? 50
-                      : 40,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      // Background circle
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          gradient: RadialGradient(
-                            colors: [
-                              primaryColor.withOpacity(0.1),
-                              primaryColor.withOpacity(0.05),
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: AnimatedSlide(
+                      duration: const Duration(milliseconds: 220),
+                      offset: showLabel ? Offset.zero : const Offset(0, -0.2),
+                      curve: Curves.easeOut,
+                      child: AnimatedOpacity(
+                        opacity: showLabel ? 1 : 0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(999),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.15),
+                                blurRadius: 12,
+                                offset: const Offset(0, 4),
+                              ),
                             ],
+                          ),
+                          child: Text(
+                            skill.name,
+                            style: TextStyle(
+                              color: primaryColor.darken(),
+                              fontSize: 11,
+                              fontWeight: FontWeight.w600,
+                              letterSpacing: 0.4,
+                            ),
                           ),
                         ),
                       ),
-                      // Progress ring
-                      CircularProgressIndicator(
-                        value: skill.proficiency / 100,
-                        strokeWidth: 6,
-                        backgroundColor: primaryColor.withOpacity(0.1),
-                        valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
-                        strokeCap: StrokeCap.round,
-                      ),
-                      // Percentage text - Responsive
-                      Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              '${skill.proficiency}%',
-                              style: TextStyle(
-                                color: primaryColor,
-                                fontSize: MediaQuery.of(context).size.width >
-                                        AppDimensions.mobileBreakpoint
-                                    ? 11
-                                    : 9,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            Text(
-                              years > 0 ? '$years+ yr' : 'New',
-                              style: TextStyle(
-                                color: primaryColor.withOpacity(0.6),
-                                fontSize: MediaQuery.of(context).size.width >
-                                        AppDimensions.mobileBreakpoint
-                                    ? 8
-                                    : 7,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
-
-                // Bottom Section - Progress and Level
-                // Expanded(
-                //   flex: 2,
-                //   child: Column(
-                //     mainAxisAlignment: MainAxisAlignment.center,
-                //     children: [
-
-                //     ],
-                //   ),
-                // )
-              ],
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        }),
       ),
     )
         .animate()
-        .fadeIn(duration: 800.ms, delay: delay.ms)
-        .slideY(begin: 0.3, curve: Curves.easeOutBack)
-        .scale(begin: const Offset(0.8, 0.8), curve: Curves.easeOutBack);
+        .fadeIn(duration: 700.ms, delay: delay.ms)
+        .slideY(begin: 0.2, curve: Curves.easeOutBack);
   }
 
   void _showSkillDetails(BuildContext context, Skill skill) {
@@ -788,5 +611,14 @@ class SkillCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+extension on Color {
+  Color darken([double amount = .2]) {
+    assert(amount >= 0 && amount <= 1);
+    final hsl = HSLColor.fromColor(this);
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+    return hslDark.toColor();
   }
 }

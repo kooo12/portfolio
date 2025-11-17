@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../controllers/navigation_controller.dart';
 import '../models/project.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_dimensions.dart';
@@ -23,6 +24,7 @@ class ProjectsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigationController = Get.find<NavigationController>();
     return Container(
       constraints:
           const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
@@ -33,45 +35,60 @@ class ProjectsSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Section Title
-          Text(
-            'Featured Projects',
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.headlineLarge?.color,
-                ),
-          ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2),
+          Obx(() {
+            final shouldAnimate = navigationController.currentIndex.value >= 4;
+            return Text(
+              'Featured Projects',
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.headlineLarge?.color,
+                  ),
+            )
+                .animate(target: shouldAnimate ? 1 : 0)
+                .fadeIn(duration: 600.ms)
+                .slideY(begin: -0.2);
+          }),
 
           const SizedBox(height: AppDimensions.spacingL),
 
-          Text(
-            'Here are some of my recent projects that showcase my skills and experience',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.color
-                      ?.withOpacity(0.7),
-                ),
-          )
-              .animate()
-              .fadeIn(duration: 600.ms, delay: 200.ms)
-              .slideY(begin: -0.2),
+          Obx(() {
+            final shouldAnimate = navigationController.currentIndex.value >= 4;
+            return Text(
+              'Here are some of my recent projects that showcase my skills and experience',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.color
+                        ?.withOpacity(0.7),
+                  ),
+            )
+                .animate(target: shouldAnimate ? 1 : 0)
+                .fadeIn(duration: 600.ms, delay: 200.ms)
+                .slideY(begin: -0.2);
+          }),
 
           const SizedBox(height: AppDimensions.spacingXXXL),
 
           // Category Filter
-          _buildCategoryFilter(context)
-              .animate()
-              .fadeIn(duration: 600.ms, delay: 400.ms)
-              .slideY(begin: -0.2),
+          Obx(() {
+            final shouldAnimate = navigationController.currentIndex.value >= 4;
+            return _buildCategoryFilter(context)
+                .animate(target: shouldAnimate ? 1 : 0)
+                .fadeIn(duration: 600.ms, delay: 400.ms)
+                .slideY(begin: -0.2);
+          }),
 
           const SizedBox(height: AppDimensions.spacingXXXL),
 
           // Projects Grid
-          _buildProjectsGrid(context)
-              .animate()
-              .fadeIn(duration: 800.ms, delay: 600.ms)
-              .slideY(begin: 0.2),
+          Obx(() {
+            final shouldAnimate = navigationController.currentIndex.value >= 4;
+            return _buildProjectsGrid(context)
+                .animate(target: shouldAnimate ? 1 : 0)
+                .fadeIn(duration: 800.ms, delay: 600.ms)
+                .slideY(begin: 0.2);
+          }),
         ],
       ),
     );

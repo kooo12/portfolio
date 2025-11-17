@@ -10,60 +10,47 @@ class Footer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.primaryLight.withOpacity(0.1),
-            AppColors.secondaryLight.withOpacity(0.1),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-      ),
-      child: Container(
-        constraints:
-            const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
-        margin: const EdgeInsets.symmetric(
-            horizontal: AppDimensions.containerPadding),
-        padding:
-            const EdgeInsets.symmetric(vertical: AppDimensions.spacingXXXL),
-        child: Column(
-          children: [
-            // Footer Content
-            LayoutBuilder(
-              builder: (context, constraints) {
-                if (constraints.maxWidth > AppDimensions.tabletBreakpoint) {
-                  return _buildDesktopFooter(context);
-                } else {
-                  return _buildMobileFooter(context);
-                }
-              },
-            ),
+      constraints:
+          const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
+      margin: const EdgeInsets.symmetric(
+          horizontal: AppDimensions.containerPadding),
+      padding: const EdgeInsets.symmetric(vertical: AppDimensions.spacingXXXL),
+      child: Column(
+        children: [
+          // Footer Content
+          // LayoutBuilder(
+          //   builder: (context, constraints) {
+          //     if (constraints.maxWidth > AppDimensions.tabletBreakpoint) {
+          //       return _buildDesktopFooter(context);
+          //     } else {
+          //       return _buildMobileFooter(context);
+          //     }
+          //   },
+          // ),
 
-            const SizedBox(height: AppDimensions.spacingXXXL),
+          // const SizedBox(height: AppDimensions.spacingXXXL),
 
-            // Divider
-            Container(
-              height: 1,
-              color: Theme.of(context).dividerColor.withOpacity(0.2),
-            ),
+          // // Divider
+          // Container(
+          //   height: 1,
+          //   color: Theme.of(context).dividerColor.withOpacity(0.2),
+          // ),
 
-            const SizedBox(height: AppDimensions.spacingXL),
+          const SizedBox(height: AppDimensions.spacingXL),
 
-            // Copyright
-            Text(
-              '© 2024 Portfolio. Built with Flutter and GetX.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodyLarge
-                        ?.color
-                        ?.withOpacity(0.6),
-                  ),
-              textAlign: TextAlign.center,
-            ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
-          ],
-        ),
+          // Copyright
+          Text(
+            '© 2025 Portfolio. Built with Flutter and GetX.',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.color
+                      ?.withOpacity(0.6),
+                ),
+            textAlign: TextAlign.center,
+          ).animate().fadeIn(duration: 600.ms).slideY(begin: 0.2),
+        ],
       ),
     );
   }

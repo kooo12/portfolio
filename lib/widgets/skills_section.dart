@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import '../controllers/navigation_controller.dart';
 import '../models/skill.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_dimensions.dart';
@@ -8,14 +9,26 @@ import 'skill_card.dart';
 
 class SkillsSection extends StatelessWidget {
   final RxList<Skill> skills;
+  final NavigationController navigationController =
+      Get.find<NavigationController>();
 
-  const SkillsSection({
+  SkillsSection({
     super.key,
     required this.skills,
   });
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() {
+      final tick = navigationController.sectionAnimationTicks[2].value;
+      return KeyedSubtree(
+        key: ValueKey('skills-section-$tick'),
+        child: _buildContent(context),
+      );
+    });
+  }
+
+  Widget _buildContent(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 768;
 

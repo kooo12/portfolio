@@ -2,20 +2,33 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
+import '../controllers/navigation_controller.dart';
 import '../models/experience.dart';
 import '../utils/app_colors.dart';
 import '../utils/app_dimensions.dart';
 
 class ExperienceSection extends StatelessWidget {
   final RxList<Experience> experiences;
+  final NavigationController navigationController =
+      Get.find<NavigationController>();
 
-  const ExperienceSection({
+  ExperienceSection({
     super.key,
     required this.experiences,
   });
 
   @override
   Widget build(BuildContext context) {
+    return Obx(() {
+      final tick = navigationController.sectionAnimationTicks[3].value;
+      return KeyedSubtree(
+        key: ValueKey('experience-section-$tick'),
+        child: _buildContent(context),
+      );
+    });
+  }
+
+  Widget _buildContent(BuildContext context) {
     return Container(
       constraints:
           const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
