@@ -3,6 +3,9 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:protfolio/utils/app_dimensions.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 import '../controllers/portfolio_controller.dart';
 import '../models/skill.dart';
 
@@ -205,6 +208,45 @@ class SkillCard extends StatelessWidget {
     }
   }
 
+  Widget _buildSkillIcon({
+    required String iconUrl,
+    required IconData fallbackIcon,
+    required double size,
+    required bool isMobile,
+  }) {
+    final isSvg = iconUrl.toLowerCase().endsWith('.svg');
+
+    if (isSvg) {
+      return _SvgNetworkImageWithFallback(
+        url: iconUrl,
+        fallbackIcon: fallbackIcon,
+        size: size,
+      );
+    } else {
+      return CachedNetworkImage(
+        imageUrl: iconUrl,
+        width: size,
+        height: size,
+        fit: BoxFit.contain,
+        placeholder: (context, url) => SizedBox(
+          width: size * 0.7,
+          height: size * 0.7,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            valueColor: AlwaysStoppedAnimation<Color>(
+              Colors.white.withOpacity(0.3),
+            ),
+          ),
+        ),
+        errorWidget: (context, url, error) => FaIcon(
+          fallbackIcon,
+          size: size * 0.7,
+          color: Colors.white,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final skillInfo = _getSkillInfo(skill.name);
@@ -263,10 +305,11 @@ class SkillCard extends StatelessWidget {
                 children: [
                   Align(
                     alignment: Alignment.center,
-                    child: FaIcon(
-                      icon,
-                      size: isMobile ? 28 : 34,
-                      color: Colors.white,
+                    child: _buildSkillIcon(
+                      iconUrl: skill.iconUrl,
+                      fallbackIcon: icon,
+                      size: isMobile ? 40 : 48,
+                      isMobile: isMobile,
                     ),
                   ),
                   Positioned(
@@ -378,11 +421,12 @@ class SkillCard extends StatelessWidget {
                         ],
                       ),
                       child: Center(
-                        child: FaIcon(
-                          skillInfo['icon'] as IconData,
-                          color: Colors.white,
+                        child: _buildSkillIcon(
+                          iconUrl: skill.iconUrl,
+                          fallbackIcon: skillInfo['icon'] as IconData,
                           size:
-                              MediaQuery.of(context).size.width > 600 ? 36 : 28,
+                              MediaQuery.of(context).size.width > 600 ? 50 : 40,
+                          isMobile: MediaQuery.of(context).size.width <= 600,
                         ),
                       ),
                     ),
@@ -611,6 +655,100 @@ class SkillCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _SvgNetworkImageWithFallback extends StatefulWidget {
+  final String url;
+  final IconData fallbackIcon;
+  final double size;
+
+  const _SvgNetworkImageWithFallback({
+    required this.url,
+    required this.fallbackIcon,
+    required this.size,
+  });
+
+  @override
+  State<_SvgNetworkImageWithFallback> createState() =>
+      _SvgNetworkImageWithFallbackState();
+}
+
+class _SvgNetworkImageWithFallbackState
+    extends State<_SvgNetworkImageWithFallback> {
+  Future<String?>? _svgData;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSvg();
+  }
+
+  Future<void> _loadSvg() async {
+    _svgData = _fetchSvg();
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  Future<String?> _fetchSvg() async {
+    try {
+      final response = await http.get(Uri.parse(widget.url));
+      if (response.statusCode == 200) {
+        return response.body;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<String?>(
+      future: _svgData,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return SizedBox(
+            width: widget.size * 0.7,
+            height: widget.size * 0.7,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(
+                Colors.white.withOpacity(0.3),
+              ),
+            ),
+          );
+        }
+
+        if (snapshot.hasError || snapshot.data == null) {
+          return FaIcon(
+            widget.fallbackIcon,
+            size: widget.size * 0.7,
+            color: Colors.white,
+          );
+        }
+
+        try {
+          return SvgPicture.string(
+            snapshot.data!,
+            width: widget.size,
+            height: widget.size,
+            fit: BoxFit.contain,
+            colorFilter: const ColorFilter.mode(
+              Colors.white,
+              BlendMode.srcIn,
+            ),
+          );
+        } catch (e) {
+          return FaIcon(
+            widget.fallbackIcon,
+            size: widget.size * 0.7,
+            color: Colors.white,
+          );
+        }
+      },
     );
   }
 }

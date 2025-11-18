@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:protfolio/controllers/navigation_controller.dart';
+import 'package:protfolio/controllers/contact_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/personal_info.dart';
 import '../utils/app_colors.dart';
@@ -12,6 +13,7 @@ class ContactSection extends StatelessWidget {
   final PersonalInfo personalInfo;
   final NavigationController navigationController =
       Get.find<NavigationController>();
+  final ContactController contactController = Get.find<ContactController>();
 
   ContactSection({
     super.key,
@@ -345,116 +347,170 @@ class ContactSection extends StatelessWidget {
   }
 
   Widget _buildContactForm(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppDimensions.spacingXL),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusL),
-        border: Border.all(
-          color: Theme.of(context).dividerColor.withOpacity(0.1),
+    return Obx(() {
+      return Container(
+        padding: const EdgeInsets.all(AppDimensions.spacingXL),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusL),
+          border: Border.all(
+            color: Theme.of(context).dividerColor.withOpacity(0.1),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            ),
+          ],
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Send me a message',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-
-          const SizedBox(height: AppDimensions.spacingL),
-
-          // Name Field
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Name',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+        child: Form(
+          key: contactController.formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Send me a message',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                borderSide: const BorderSide(color: AppColors.primaryLight),
-              ),
-            ),
-          ),
 
-          const SizedBox(height: AppDimensions.spacingM),
+              const SizedBox(height: AppDimensions.spacingL),
 
-          // Email Field
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: 'Email',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                borderSide: const BorderSide(color: AppColors.primaryLight),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: AppDimensions.spacingM),
-
-          // Message Field
-          TextFormField(
-            maxLines: 5,
-            decoration: InputDecoration(
-              labelText: 'Message',
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusM),
-                borderSide: const BorderSide(color: AppColors.primaryLight),
-              ),
-            ),
-          ),
-
-          const SizedBox(height: AppDimensions.spacingL),
-
-          // Submit Button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: () {
-                // Handle form submission
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Message sent successfully!'),
-                    backgroundColor: Colors.green,
+              // Name Field
+              TextFormField(
+                controller: contactController.nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
                   ),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryLight,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: AppColors.primaryLight),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
                 ),
-                elevation: 0,
+                validator: contactController.validateName,
               ),
-              child: const Text(
-                'Send Message',
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
+
+              const SizedBox(height: AppDimensions.spacingM),
+
+              // Email Field
+              TextFormField(
+                controller: contactController.emailController,
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: AppColors.primaryLight),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
                 ),
+                validator: contactController.validateEmail,
               ),
-            ),
+
+              const SizedBox(height: AppDimensions.spacingM),
+
+              // Message Field
+              TextFormField(
+                controller: contactController.messageController,
+                maxLines: 5,
+                decoration: InputDecoration(
+                  labelText: 'Message',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: AppColors.primaryLight),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusM),
+                    borderSide: const BorderSide(color: Colors.red),
+                  ),
+                ),
+                validator: contactController.validateMessage,
+              ),
+
+              if (contactController.errorMessage.value.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppDimensions.spacingM),
+                  child: Text(
+                    contactController.errorMessage.value,
+                    style: const TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ),
+
+              const SizedBox(height: AppDimensions.spacingL),
+
+              // Submit Button
+              SizedBox(
+                width: double.infinity,
+                child: Obx(() {
+                  return ElevatedButton(
+                    onPressed: contactController.isSubmitting.value
+                        ? null
+                        : () => contactController.submitContactForm(),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primaryLight,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(AppDimensions.radiusM),
+                      ),
+                      elevation: 0,
+                      disabledBackgroundColor:
+                          AppColors.primaryLight.withOpacity(0.6),
+                    ),
+                    child: contactController.isSubmitting.value
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                          )
+                        : const Text(
+                            'Send Message',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                  );
+                }),
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 
   void _launchUrl(String url) async {

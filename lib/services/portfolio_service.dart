@@ -100,19 +100,36 @@ class PortfolioService {
       ),
       Project(
         id: "3",
-        title: "Weather Forecast App",
+        title: "Sonus Music App",
         description:
-            "Beautiful weather app with location-based forecasts, detailed weather maps, and customizable widgets. Features smooth animations and offline support.",
-        imageUrl:
-            "https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600&h=400&fit=crop",
-        responsibilities: [],
-        coreFeatures: [],
+            "A music player app with a modern glamorous UI and smooth animations. Features smooth animations and offline support. It supports mp3, wav, m4a, and other audio formats.",
+        imageUrl: "assets/sonus.png",
+        responsibilities: [
+          "Developed complete UI and state management for mobile app.",
+          "Integrated Firebase Firestore Database for fcm tokens and user data, and real-time messaging.",
+          "Implemented admin access for push notifications, manage users and fcm tokens",
+          "Implemented offline support for audio playback",
+          "Implemented rich features - Sleep timer, Playlist, Shuffle, Repeat, Smart Recommendation, Listening Statistics, and more",
+          "Implemented two language support - English and Myanmar",
+          "Implemented dark & light modes",
+        ],
+        coreFeatures: [
+          "Google and email login with firebase authentication",
+          "Offline support for audio playback",
+          "Audio player with smooth animations",
+          "Rich features - Sleep timer, Playlist, Shuffle, Repeat, Smart Recommendation, Listening Statistics, and more",
+          "Two language support - English and Myanmar",
+          "Dark & light modes",
+          "Admin access for push notifications, manage users and fcm tokens"
+        ],
         technologies: [
           "Flutter",
-          "OpenWeather API",
-          "BLoC",
+          "Firebase",
+          "GetX",
           "SQLite",
-          "Animations"
+          "Animations",
+          "Firebase FCM",
+          "Firebase Firestore",
         ],
         githubUrl: "https://github.com/johndoe/weather-app",
         liveUrl: null,

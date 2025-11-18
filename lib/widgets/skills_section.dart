@@ -86,108 +86,71 @@ class SkillsSection extends StatelessWidget {
               height:
                   isMobile ? AppDimensions.spacingXL : AppDimensions.spacingXL),
 
-          // Skills by Category
+          // Skills Grid - Mobile Responsive
           Obx(() {
-            final skillCategories =
-                skills.map((skill) => skill.category).toSet().toList();
+            final skillsList = skills.toList();
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final screenWidth = MediaQuery.of(context).size.width;
 
-            return Column(
-              children: skillCategories.map((category) {
-                final categorySkills = skills
-                    .where((skill) => skill.category == category)
-                    .toList();
-                return _buildSkillCategory(context, category, categorySkills,
-                    skillCategories.indexOf(category));
-              }).toList(),
+                int crossAxisCount;
+                double crossAxisSpacing;
+                double mainAxisSpacing;
+                double childAspectRatio;
+
+                if (screenWidth < AppDimensions.mobileBreakpoint) {
+                  // Mobile screens
+                  if (screenWidth < 480) {
+                    crossAxisCount = 2;
+                    crossAxisSpacing = 6;
+                    mainAxisSpacing = 8;
+                    childAspectRatio = 1.0; // Square cards
+                  } else {
+                    crossAxisCount = 3;
+                    crossAxisSpacing = 10;
+                    mainAxisSpacing = 12;
+                    childAspectRatio = 1.0; // Square cards
+                  }
+                } else if (screenWidth < AppDimensions.tabletBreakpoint) {
+                  // Tablet screens
+                  crossAxisCount = 4;
+                  crossAxisSpacing = AppDimensions.spacingL;
+                  mainAxisSpacing = AppDimensions.spacingL;
+                  childAspectRatio = 1.0; // Square cards
+                } else if (screenWidth < AppDimensions.desktopBreakpoint) {
+                  crossAxisCount = 5;
+                  crossAxisSpacing = AppDimensions.spacingL;
+                  mainAxisSpacing = AppDimensions.spacingL;
+                  childAspectRatio = 1.0; // Square cards
+                } else {
+                  // Large desktop screens
+                  crossAxisCount = 6;
+                  crossAxisSpacing = AppDimensions.spacingXL;
+                  mainAxisSpacing = AppDimensions.spacingXL;
+                  childAspectRatio = 1.0; // Square cards
+                }
+
+                return GridView.builder(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(left: AppDimensions.spacingXL),
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    crossAxisSpacing: crossAxisSpacing,
+                    mainAxisSpacing: mainAxisSpacing,
+                    childAspectRatio: childAspectRatio,
+                  ),
+                  itemCount: skillsList.length,
+                  itemBuilder: (context, skillIndex) {
+                    return SkillCard(
+                      skill: skillsList[skillIndex],
+                      delay: skillIndex * 100,
+                    );
+                  },
+                );
+              },
             );
           }),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSkillCategory(BuildContext context, String category,
-      List<Skill> categorySkills, int index) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: AppDimensions.spacingXXXL),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Category Title
-          Text(
-            category,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryLight,
-                ),
-          )
-              .animate()
-              .fadeIn(duration: 600.ms, delay: (index * 100).ms)
-              .slideY(begin: -0.2),
-
-          const SizedBox(height: AppDimensions.spacingXL),
-
-          // Skills Grid - Mobile Responsive
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final screenWidth = MediaQuery.of(context).size.width;
-
-              int crossAxisCount;
-              double crossAxisSpacing;
-              double mainAxisSpacing;
-              double childAspectRatio;
-
-              if (screenWidth < AppDimensions.mobileBreakpoint) {
-                // Mobile screens
-                if (screenWidth < 480) {
-                  crossAxisCount = 2;
-                  crossAxisSpacing = 6;
-                  mainAxisSpacing = 8;
-                  childAspectRatio = 0.65;
-                } else {
-                  crossAxisCount = 2;
-                  crossAxisSpacing = 10;
-                  mainAxisSpacing = 12;
-                  childAspectRatio = 0.7;
-                }
-              } else if (screenWidth < AppDimensions.tabletBreakpoint) {
-                // Tablet screens
-                crossAxisCount = 3;
-                crossAxisSpacing = AppDimensions.spacingL;
-                mainAxisSpacing = AppDimensions.spacingL;
-                childAspectRatio = 0.7;
-              } else if (screenWidth < AppDimensions.desktopBreakpoint) {
-                crossAxisCount = 4;
-                crossAxisSpacing = AppDimensions.spacingL;
-                mainAxisSpacing = AppDimensions.spacingL;
-                childAspectRatio = 0.8;
-              } else {
-                // Large desktop screens
-                crossAxisCount = 5;
-                crossAxisSpacing = AppDimensions.spacingXL;
-                mainAxisSpacing = AppDimensions.spacingXL;
-                childAspectRatio = 0.85;
-              }
-
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: crossAxisCount,
-                  crossAxisSpacing: crossAxisSpacing,
-                  mainAxisSpacing: mainAxisSpacing,
-                  childAspectRatio: childAspectRatio,
-                ),
-                itemCount: categorySkills.length,
-                itemBuilder: (context, skillIndex) {
-                  return SkillCard(
-                    skill: categorySkills[skillIndex],
-                    delay: index * 100 + skillIndex * 100,
-                  );
-                },
-              );
-            },
-          ),
         ],
       ),
     );
