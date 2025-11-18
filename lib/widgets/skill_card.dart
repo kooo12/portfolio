@@ -223,7 +223,8 @@ class SkillCard extends StatelessWidget {
         onTap: () => _showSkillDetails(context, skill),
         child: Obx(() {
           final isHovered =
-              isMobile ? true : portfolioController.isSkillHovered(skill.name);
+              // isMobile ? true :
+              portfolioController.isSkillHovered(skill.name);
           final showLabel = isHovered;
 
           return AnimatedScale(

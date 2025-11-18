@@ -124,6 +124,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
 
   void _scrollToSection(int index) {
     navigationController.scrollToSection(index);
+    // navigationController.sectionAnimationTicks[index].value;
   }
 
   void _showMobileMenu(BuildContext context) {

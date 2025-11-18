@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:protfolio/controllers/navigation_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/personal_info.dart';
 import '../utils/app_colors.dart';
@@ -8,63 +10,72 @@ import '../utils/app_dimensions.dart';
 
 class ContactSection extends StatelessWidget {
   final PersonalInfo personalInfo;
+  final NavigationController navigationController =
+      Get.find<NavigationController>();
 
-  const ContactSection({
+  ContactSection({
     super.key,
     required this.personalInfo,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      constraints:
-          const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
-      margin: const EdgeInsets.symmetric(
-          horizontal: AppDimensions.containerPadding),
-      padding: const EdgeInsets.symmetric(vertical: AppDimensions.spacingXXL),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Section Title
-          Text(
-            'Get In Touch',
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.headlineLarge?.color,
-                ),
-          ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2),
+    return Obx(() {
+      final tick = navigationController.sectionAnimationTicks[5].value;
+      return KeyedSubtree(
+        key: ValueKey('contact-section-$tick'),
+        child: Container(
+          constraints:
+              const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
+          margin: const EdgeInsets.symmetric(
+              horizontal: AppDimensions.containerPadding),
+          padding:
+              const EdgeInsets.symmetric(vertical: AppDimensions.spacingXXL),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Section Title
+              Text(
+                'Get In Touch',
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).textTheme.headlineLarge?.color,
+                    ),
+              ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2),
 
-          const SizedBox(height: AppDimensions.spacingL),
+              const SizedBox(height: AppDimensions.spacingL),
 
-          Text(
-            'I\'m always open to discussing new opportunities and interesting projects',
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context)
-                      .textTheme
-                      .bodyLarge
-                      ?.color
-                      ?.withOpacity(0.7),
-                ),
-          )
-              .animate()
-              .fadeIn(duration: 600.ms, delay: 200.ms)
-              .slideY(begin: -0.2),
+              Text(
+                'I\'m always open to discussing new opportunities and interesting projects',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.color
+                          ?.withOpacity(0.7),
+                    ),
+              )
+                  .animate()
+                  .fadeIn(duration: 600.ms, delay: 200.ms)
+                  .slideY(begin: -0.2),
 
-          const SizedBox(height: AppDimensions.spacingXXXL),
+              const SizedBox(height: AppDimensions.spacingXXXL),
 
-          // Contact Content
-          LayoutBuilder(
-            builder: (context, constraints) {
-              if (constraints.maxWidth > AppDimensions.tabletBreakpoint) {
-                return _buildDesktopLayout(context);
-              } else {
-                return _buildMobileLayout(context);
-              }
-            },
+              // Contact Content
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  if (constraints.maxWidth > AppDimensions.tabletBreakpoint) {
+                    return _buildDesktopLayout(context);
+                  } else {
+                    return _buildMobileLayout(context);
+                  }
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    );
+        ),
+      );
+    });
   }
 
   Widget _buildDesktopLayout(BuildContext context) {
@@ -153,6 +164,7 @@ class ContactSection extends StatelessWidget {
 
   Widget _buildMobileLayout(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Contact Info
         _buildContactInfo(

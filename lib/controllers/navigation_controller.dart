@@ -143,7 +143,7 @@ class NavigationController extends GetxController {
       if (renderBox != null) {
         final viewport = RenderAbstractViewport.of(renderBox);
         final reveal = viewport.getOffsetToReveal(renderBox, 0.0);
-        final targetOffset = (reveal.offset) - 120;
+        final targetOffset = (reveal.offset) - 10;
         final clampedOffset = targetOffset.clamp(
           scrollController.position.minScrollExtent,
           scrollController.position.maxScrollExtent,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:protfolio/controllers/navigation_controller.dart';
 import 'package:protfolio/controllers/theme_controller.dart';
 import '../models/personal_info.dart';
 import '../utils/app_colors.dart';
@@ -9,136 +8,127 @@ import '../utils/app_dimensions.dart';
 
 class AboutSection extends StatelessWidget {
   final PersonalInfo personalInfo;
-  final ThemeController themeCtrl = Get.find<ThemeController>();
-  final NavigationController navigationController =
-      Get.find<NavigationController>();
 
-  AboutSection({
+  const AboutSection({
     super.key,
     required this.personalInfo,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final tick = navigationController.sectionAnimationTicks[1].value;
-      return KeyedSubtree(
-        key: ValueKey('about-section-$tick'),
-        child: Obx(
-          () => Container(
-            constraints:
-                const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
-            margin: const EdgeInsets.symmetric(
-                horizontal: AppDimensions.containerPadding),
-            padding:
-                const EdgeInsets.symmetric(vertical: AppDimensions.spacingS),
-            child: Column(
+    final themeCtrl = Get.find<ThemeController>();
+    return Obx(
+      () => Container(
+        constraints:
+            const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
+        margin: const EdgeInsets.symmetric(
+            horizontal: AppDimensions.containerPadding),
+        padding: const EdgeInsets.symmetric(vertical: AppDimensions.spacingS),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Section Title
+            Text(
+              'About Me',
+              style: themeCtrl.activeTheme.textTheme.displayMedium
+                  ?.copyWith(fontWeight: FontWeight.bold, fontSize: 45),
+            ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2),
+
+            const SizedBox(height: AppDimensions.spacingL),
+
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Section Title
-                Text(
-                  'About Me',
-                  style: themeCtrl.activeTheme.textTheme.displayMedium
-                      ?.copyWith(fontWeight: FontWeight.bold, fontSize: 45),
-                ).animate().fadeIn(duration: 600.ms).slideY(begin: -0.2),
+                // Left side - Content
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Bio
+                      Text(
+                        personalInfo.bio,
+                        style:
+                            themeCtrl.activeTheme.textTheme.bodyLarge?.copyWith(
+                          height: 1.8,
+                          color: themeCtrl
+                              .activeTheme.textTheme.bodyLarge?.color
+                              ?.withOpacity(0.8),
+                        ),
+                      )
+                          .animate()
+                          .fadeIn(duration: 800.ms, delay: 200.ms)
+                          .slideY(begin: -0.2),
 
-                const SizedBox(height: AppDimensions.spacingL),
+                      const SizedBox(height: AppDimensions.spacingXL),
 
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Left side - Content
-                    Expanded(
-                      flex: 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      // Additional Info
+                      _buildInfoRow(context, Icons.location_on, 'Location',
+                              personalInfo.location, themeCtrl)
+                          .animate()
+                          .fadeIn(duration: 600.ms, delay: 400.ms)
+                          .slideX(begin: -0.2),
+
+                      const SizedBox(height: AppDimensions.spacingM),
+
+                      _buildInfoRow(context, Icons.email, 'Email',
+                              personalInfo.email, themeCtrl)
+                          .animate()
+                          .fadeIn(duration: 600.ms, delay: 500.ms)
+                          .slideX(begin: -0.2),
+
+                      const SizedBox(height: AppDimensions.spacingM),
+
+                      _buildInfoRow(context, Icons.phone, 'Phone',
+                              personalInfo.phone, themeCtrl)
+                          .animate()
+                          .fadeIn(duration: 600.ms, delay: 600.ms)
+                          .slideX(begin: -0.2),
+
+                      const SizedBox(height: AppDimensions.spacingXL),
+
+                      // Stats
+                      Row(
                         children: [
-                          // Bio
-                          Text(
-                            personalInfo.bio,
-                            style: themeCtrl.activeTheme.textTheme.bodyLarge
-                                ?.copyWith(
-                              height: 1.8,
-                              color: themeCtrl
-                                  .activeTheme.textTheme.bodyLarge?.color
-                                  ?.withOpacity(0.8),
-                            ),
-                          )
-                              .animate()
-                              .fadeIn(duration: 800.ms, delay: 200.ms)
-                              .slideY(begin: -0.2),
-
-                          const SizedBox(height: AppDimensions.spacingXL),
-
-                          // Additional Info
-                          _buildInfoRow(context, Icons.location_on, 'Location',
-                                  personalInfo.location, themeCtrl)
-                              .animate()
-                              .fadeIn(duration: 600.ms, delay: 400.ms)
-                              .slideX(begin: -0.2),
-
-                          const SizedBox(height: AppDimensions.spacingM),
-
-                          _buildInfoRow(context, Icons.email, 'Email',
-                                  personalInfo.email, themeCtrl)
-                              .animate()
-                              .fadeIn(duration: 600.ms, delay: 500.ms)
-                              .slideX(begin: -0.2),
-
-                          const SizedBox(height: AppDimensions.spacingM),
-
-                          _buildInfoRow(context, Icons.phone, 'Phone',
-                                  personalInfo.phone, themeCtrl)
-                              .animate()
-                              .fadeIn(duration: 600.ms, delay: 600.ms)
-                              .slideX(begin: -0.2),
-
-                          const SizedBox(height: AppDimensions.spacingXL),
-
-                          // Stats
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _buildStatCard(context, '3+',
-                                        'Years Experience', themeCtrl)
-                                    .animate()
-                                    .fadeIn(duration: 600.ms, delay: 700.ms)
-                                    .scale(begin: const Offset(0.8, 0.8)),
-                              ),
-                              const SizedBox(width: AppDimensions.spacingL),
-                              Expanded(
-                                child: _buildStatCard(context, '20+',
-                                        'Projects Completed', themeCtrl)
-                                    .animate()
-                                    .fadeIn(duration: 600.ms, delay: 800.ms)
-                                    .scale(begin: const Offset(0.8, 0.8)),
-                              ),
-                            ],
+                          Expanded(
+                            child: _buildStatCard(context, '3+',
+                                    'Years Experience', themeCtrl)
+                                .animate()
+                                .fadeIn(duration: 600.ms, delay: 700.ms)
+                                .scale(begin: const Offset(0.8, 0.8)),
+                          ),
+                          const SizedBox(width: AppDimensions.spacingL),
+                          Expanded(
+                            child: _buildStatCard(context, '20+',
+                                    'Projects Completed', themeCtrl)
+                                .animate()
+                                .fadeIn(duration: 600.ms, delay: 800.ms)
+                                .scale(begin: const Offset(0.8, 0.8)),
                           ),
                         ],
                       ),
-                    ),
-
-                    // Right side - Skills Preview
-                    if (MediaQuery.of(context).size.width >
-                        AppDimensions.tabletBreakpoint) ...[
-                      const SizedBox(width: AppDimensions.spacingXXXL),
-                      Expanded(
-                        flex: 1,
-                        child: _buildSkillsPreview(context, themeCtrl)
-                            .animate()
-                            .fadeIn(duration: 800.ms, delay: 300.ms)
-                            .slideX(begin: 0.2),
-                      ),
                     ],
-                  ],
+                  ),
                 ),
+
+                // Right side - Skills Preview
+                if (MediaQuery.of(context).size.width >
+                    AppDimensions.tabletBreakpoint) ...[
+                  const SizedBox(width: AppDimensions.spacingXXXL),
+                  Expanded(
+                    flex: 1,
+                    child: _buildSkillsPreview(context, themeCtrl)
+                        .animate()
+                        .fadeIn(duration: 800.ms, delay: 300.ms)
+                        .slideX(begin: 0.2),
+                  ),
+                ],
               ],
             ),
-          ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 
   Widget _buildInfoRow(BuildContext context, IconData icon, String label,

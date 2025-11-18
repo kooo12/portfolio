@@ -13,10 +13,8 @@ class HeroSection extends StatelessWidget {
   final PersonalInfo personalInfo;
   final GlobalKey contactKey;
   final ScrollController scrollController;
-  final NavigationController navigationController =
-      Get.find<NavigationController>();
 
-  HeroSection({
+  const HeroSection({
     super.key,
     required this.personalInfo,
     required this.contactKey,
@@ -25,16 +23,6 @@ class HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final tick = navigationController.sectionAnimationTicks[0].value;
-      return KeyedSubtree(
-        key: ValueKey('hero-section-$tick'),
-        child: _buildContent(context),
-      );
-    });
-  }
-
-  Widget _buildContent(BuildContext context) {
     return Container(
       constraints:
           const BoxConstraints(maxWidth: AppDimensions.containerMaxWidth),
