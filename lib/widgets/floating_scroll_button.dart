@@ -73,8 +73,11 @@ class _FloatingScrollButtonState extends State<FloatingScrollButton> {
           curve: Curves.easeOutBack,
           child: Container(
             decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: AppColors.primaryGradient,
+              gradient: LinearGradient(
+                colors: [
+                  Colors.grey.withOpacity(0.5),
+                  Colors.grey.withOpacity(0.3)
+                ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),

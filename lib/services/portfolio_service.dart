@@ -139,26 +139,32 @@ class PortfolioService {
       ),
       Project(
         id: "4",
-        title: "Portfolio Website",
+        title: "Music Player Promotion Website",
         description:
-            "Modern, responsive portfolio website built with Flutter Web. Features smooth animations, dark/light theme, and contact form integration.",
-        imageUrl:
-            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
+            "Modern, responsive music player promotion website built with Flutter Web. Features smooth animations, features section, download button and app screen shots.",
+        imageUrl: "assets/sonus_web.png",
         responsibilities: [
           "Developed responsive UI components using Flutter Web.",
-          "Implemented state management with GetX.",
-          "Integrated contact form with email service."
+          "Implemented state management with GetX."
         ],
-        coreFeatures: [],
+        coreFeatures: [
+          "Smooth animations",
+          "QR code for app download",
+          "Features section with smooth animations",
+          "App screen shots with smooth animations",
+          "Download button with smooth animations",
+          "Developer information"
+        ],
         technologies: [
           "Flutter Web",
           "GetX",
-          "Responsive Design",
+          "Firebase Hosting",
           "Animations",
-          "Contact Forms"
+          "Responsive Design",
         ],
-        githubUrl: "https://github.com/johndoe/portfolio",
-        liveUrl: "https://johndoe.dev",
+        // githubUrl: "https://github.com/kooo12/sonus-music-web",
+        githubUrl: null,
+        liveUrl: "https://sonus-music-web.firebaseapp.com",
         category: "Web",
       ),
     ];
