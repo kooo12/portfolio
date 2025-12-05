@@ -132,7 +132,8 @@ class SkillsSection extends StatelessWidget {
 
                 return GridView.builder(
                   shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: AppDimensions.spacingXL),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: AppDimensions.spacingXL),
                   physics: const NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: crossAxisCount,

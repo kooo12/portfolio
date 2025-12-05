@@ -113,7 +113,7 @@ class SkillCard extends StatelessWidget {
       //   };
       case 'firebase':
         return {
-          'primaryColor': const Color(0xFFFFCA28),
+          'primaryColor': const Color.fromARGB(255, 212, 159, 0),
           'secondaryColor': const Color(0xFFFF6F00),
           'accentColor': const Color(0xFFFFF176),
           'bgGradient': [const Color(0xFFFFCA28), const Color(0xFFFF6F00)],
@@ -126,11 +126,11 @@ class SkillCard extends StatelessWidget {
         };
       case 'rest api':
         return {
-          'primaryColor': const Color.fromARGB(255, 24, 255, 51),
+          'primaryColor': const Color.fromARGB(255, 0, 151, 35),
           'secondaryColor': const Color.fromARGB(255, 10, 195, 124),
           'accentColor': const Color.fromARGB(255, 118, 250, 255),
           'bgGradient': [
-            const Color.fromARGB(255, 40, 255, 90),
+            const Color.fromARGB(255, 0, 151, 35),
             const Color(0xFFFF6F00)
           ],
           'level': 'Intermediate',
@@ -142,7 +142,7 @@ class SkillCard extends StatelessWidget {
         };
       case 'git':
         return {
-          'primaryColor': const Color(0xFFF05032),
+          'primaryColor': const Color.fromARGB(255, 227, 58, 28),
           'secondaryColor': const Color(0xFFB74026),
           'accentColor': const Color(0xFFFF8A65),
           'bgGradient': [const Color(0xFFF05032), const Color(0xFFB74026)],
@@ -425,13 +425,13 @@ class SkillCard extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: isDarkMode
                   ? [
-                      primaryColor.withOpacity(0.15),
-                      primaryColor.withOpacity(0.08),
+                      primaryColor.withOpacity(1),
+                      // primaryColor.withOpacity(0.7),
                       theme.scaffoldBackgroundColor,
                     ]
                   : [
-                      primaryColor.withOpacity(0.05),
-                      primaryColor.withOpacity(0.02),
+                      primaryColor.withOpacity(1),
+                      // primaryColor.withOpacity(0.7),
                       theme.scaffoldBackgroundColor,
                     ],
             ),
@@ -683,8 +683,10 @@ class SkillCard extends StatelessWidget {
                     Container(
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        gradient:
-                            LinearGradient(colors: [primaryColor, accentColor]),
+                        gradient: LinearGradient(colors: [
+                          primaryColor,
+                          primaryColor.withOpacity(0.5)
+                        ]),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: TextButton(

@@ -33,7 +33,7 @@ class ContactService {
   // ============================================
 
   // Formspree Configuration
-  static const String formspreeId = 'YOUR_FORMSPREE_ID';
+  static const String formspreeId = 'mblnkzwa';
   // Example: 'xqkjvqkj' (get this from https://formspree.io/)
 
   // Web3Forms Configuration
@@ -46,7 +46,7 @@ class ContactService {
   // static const String emailjsPublicKey = 'YOUR_PUBLIC_KEY';
 
   // Backend API Configuration (if using)
-  static const String apiEndpoint = 'YOUR_API_ENDPOINT_HERE';
+  static const String apiEndpoint = 'https://formspree.io/f/';
 
   Future<Map<String, dynamic>> sendMessage({
     required String name,
@@ -56,7 +56,7 @@ class ContactService {
     try {
       // OPTION 1: Formspree (Recommended - Free, Easy)
       // Uncomment the line below and replace YOUR_FORMSPREE_ID with your form ID
-      // return await sendViaFormspree(name: name, email: email, message: message);
+      return await sendViaFormspree(name: name, email: email, message: message);
 
       // OPTION 2: Web3Forms (Alternative - Free, No Signup)
       // Uncomment the line below and replace YOUR_WEB3FORMS_KEY with your access key
@@ -70,7 +70,7 @@ class ContactService {
 
       // For development/testing: Use mock send (logs to console)
       // Remove this when you configure a real service
-      return await _mockSend(name, email, message);
+      // return await _mockSend(name, email, message);
     } catch (e) {
       return {
         'success': false,
