@@ -9,6 +9,7 @@ class Project {
   final String? githubUrl;
   final String? liveUrl;
   final String? playStoreUrl;
+  final String? appStoreUrl;
   final String category;
 
   Project({
@@ -22,6 +23,7 @@ class Project {
     this.githubUrl,
     this.liveUrl,
     this.playStoreUrl,
+    this.appStoreUrl,
     required this.category,
   });
 }

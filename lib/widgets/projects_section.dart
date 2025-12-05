@@ -388,6 +388,14 @@ class ProjectsSection extends StatelessWidget {
                                 'Play Store',
                                 isMobile,
                               ),
+                            if (project.appStoreUrl != null)
+                              _buildActionButton(
+                                context,
+                                FontAwesomeIcons.appStore,
+                                project.appStoreUrl!,
+                                'App Store',
+                                isMobile,
+                              ),
                           ],
                         ),
                       ),

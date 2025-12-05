@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/portfolio_controller.dart';
@@ -56,102 +54,48 @@ class PortfolioView extends StatelessWidget {
                 navigationController: navigationController,
                 themeController: themeController,
               ),
-        body: Obx(
-          () => AnimatedSwitcher(
-            duration: const Duration(milliseconds: 1600),
-            switchInCurve: Curves.easeInOutCubicEmphasized,
-            switchOutCurve: Curves.easeInOutCubic,
-            layoutBuilder: (currentChild, previousChildren) {
-              return Stack(
-                fit: StackFit.expand,
-                children: [
-                  ...previousChildren,
-                  if (currentChild != null) currentChild,
-                ],
-              );
-            },
-            transitionBuilder: _oldTvTransition,
-            child: portfolioController.isLoading.value
-                ? const _LoaderStage()
-                : _PortfolioContent(
-                    navigationController: navigationController,
-                    portfolioController: portfolioController,
-                    heroKey: heroKey,
-                    aboutKey: aboutKey,
-                    skillsKey: skillsKey,
-                    experienceKey: experienceKey,
-                    projectsKey: projectsKey,
-                    contactKey: contactKey,
-                  ),
-          ),
+        body: AnimatedSwitcher(
+          duration: const Duration(milliseconds: 900),
+          switchInCurve: Curves.easeInOutCubic,
+          switchOutCurve: Curves.easeInOutCubic,
+          transitionBuilder: _bottomToTopTransition,
+          child: portfolioController.isLoading.value
+              ? const _LoaderStage(key: ValueKey('loader'))
+              : _PortfolioContent(
+                  key: const ValueKey('content'),
+                  navigationController: navigationController,
+                  portfolioController: portfolioController,
+                  heroKey: heroKey,
+                  aboutKey: aboutKey,
+                  skillsKey: skillsKey,
+                  experienceKey: experienceKey,
+                  projectsKey: projectsKey,
+                  contactKey: contactKey,
+                ),
         ),
       ),
     );
   }
 
-  Widget _oldTvTransition(Widget child, Animation<double> animation) {
-    final curved =
-        CurvedAnimation(parent: animation, curve: Curves.easeInOutCubic);
+  Widget _bottomToTopTransition(Widget child, Animation<double> animation) {
+    // Smooth page-scrolling-like animation from bottom to top
+    final slideAnimation = CurvedAnimation(
+      parent: animation,
+      curve: Curves.easeInOutCubic,
+    );
 
-    return AnimatedBuilder(
-      animation: curved,
+    return SlideTransition(
+      position: Tween<Offset>(
+        begin: const Offset(0.0, 1.0), // Start from bottom (full screen height)
+        end: Offset.zero, // End at normal position
+      ).animate(slideAnimation),
       child: child,
-      builder: (context, child) {
-        final scaleY = lerpDouble(0.02, 1.0, curved.value) ?? 1.0;
-        final rotation = lerpDouble(0.35, 0, curved.value) ?? 0;
-        final borderRadius = lerpDouble(60, 0, curved.value) ?? 0;
-        final glowOpacity = (1 - curved.value).clamp(0.0, 1.0);
-
-        return Stack(
-          children: [
-            Transform(
-              alignment: Alignment.center,
-              transform: Matrix4.identity()
-                ..setEntry(3, 2, 0.0015)
-                ..rotateX(rotation)
-                ..scale(1, scaleY),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(borderRadius),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.white.withOpacity(glowOpacity * 0.2),
-                      width: 1.2,
-                    ),
-                  ),
-                  child: child,
-                ),
-              ),
-            ),
-            if (glowOpacity > 0.01)
-              IgnorePointer(
-                child: Opacity(
-                  opacity: glowOpacity * 0.8,
-                  child: const DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Colors.transparent,
-                          Colors.white54,
-                          Colors.transparent,
-                        ],
-                      ),
-                    ),
-                    child: SizedBox.expand(),
-                  ),
-                ),
-              ),
-          ],
-        );
-      },
     );
   }
 }
 
 class _LoaderStage extends StatelessWidget {
-  const _LoaderStage();
+  const _LoaderStage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -180,6 +124,7 @@ class _LoaderStage extends StatelessWidget {
 
 class _PortfolioContent extends StatelessWidget {
   const _PortfolioContent({
+    super.key,
     required this.navigationController,
     required this.portfolioController,
     required this.heroKey,
@@ -208,37 +153,52 @@ class _PortfolioContent extends StatelessWidget {
             controller: navigationController.scrollController,
             child: Column(
               children: [
-                HeroSection(
-                  key: heroKey,
-                  personalInfo: portfolioController.personalInfo.value!,
-                  contactKey: contactKey,
-                  scrollController: navigationController.scrollController,
+                RepaintBoundary(
+                  child: HeroSection(
+                    key: heroKey,
+                    personalInfo: portfolioController.personalInfo.value!,
+                    contactKey: contactKey,
+                    scrollController: navigationController.scrollController,
+                  ),
                 ),
-                AboutSection(
-                  key: aboutKey,
-                  personalInfo: portfolioController.personalInfo.value!,
+                RepaintBoundary(
+                  child: AboutSection(
+                    key: aboutKey,
+                    personalInfo: portfolioController.personalInfo.value!,
+                  ),
                 ),
-                SkillsSection(
-                  key: skillsKey,
-                  skills: portfolioController.skills,
+                RepaintBoundary(
+                  child: SkillsSection(
+                    key: skillsKey,
+                    skills: portfolioController.skills,
+                  ),
                 ),
-                ExperienceSection(
-                  key: experienceKey,
-                  experiences: portfolioController.experiences,
+                RepaintBoundary(
+                  child: ExperienceSection(
+                    key: experienceKey,
+                    experiences: portfolioController.experiences,
+                  ),
                 ),
-                ProjectsSection(
-                  key: projectsKey,
-                  projects: portfolioController.filteredProjects,
-                  categories: portfolioController.projectCategories,
-                  selectedCategory:
-                      portfolioController.selectedProjectCategory.value,
-                  onCategoryChanged: portfolioController.selectProjectCategory,
+                RepaintBoundary(
+                  child: Obx(
+                    () => ProjectsSection(
+                      key: projectsKey,
+                      projects: portfolioController.filteredProjects,
+                      categories: portfolioController.projectCategories,
+                      selectedCategory:
+                          portfolioController.selectedProjectCategory.value,
+                      onCategoryChanged:
+                          portfolioController.selectProjectCategory,
+                    ),
+                  ),
                 ),
-                ContactSection(
-                  key: contactKey,
-                  personalInfo: portfolioController.personalInfo.value!,
+                RepaintBoundary(
+                  child: ContactSection(
+                    key: contactKey,
+                    personalInfo: portfolioController.personalInfo.value!,
+                  ),
                 ),
-                const Footer(),
+                const RepaintBoundary(child: Footer()),
               ],
             ),
           ),

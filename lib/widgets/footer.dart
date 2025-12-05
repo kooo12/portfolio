@@ -95,17 +95,17 @@ class Footer extends StatelessWidget {
               // Social Links
               Row(
                 children: [
-                  _buildSocialIcon(
-                      context, FontAwesomeIcons.github, 'https://github.com'),
+                  _buildSocialIcon(context, FontAwesomeIcons.github,
+                      'https://github.com/kooo12'),
                   const SizedBox(width: AppDimensions.spacingM),
                   _buildSocialIcon(context, FontAwesomeIcons.linkedin,
-                      'https://linkedin.com'),
+                      'https://www.linkedin.com/in/aung-ko-oo-042342242/'),
                   const SizedBox(width: AppDimensions.spacingM),
-                  _buildSocialIcon(
-                      context, FontAwesomeIcons.twitter, 'https://twitter.com'),
+                  _buildSocialIcon(context, FontAwesomeIcons.telegram,
+                      'https://t.me/kooo2109'),
                   const SizedBox(width: AppDimensions.spacingM),
                   _buildSocialIcon(context, FontAwesomeIcons.facebook,
-                      'https://facebook.com'),
+                      'https://facebook.com/kooo1210'),
                 ],
               )
                   .animate()
@@ -190,16 +190,16 @@ class Footer extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _buildSocialIcon(
-                context, FontAwesomeIcons.github, 'https://github.com'),
+                context, FontAwesomeIcons.github, 'https://github.com/kooo12'),
+            const SizedBox(width: AppDimensions.spacingM),
+            _buildSocialIcon(context, FontAwesomeIcons.linkedin,
+                'https://www.linkedin.com/in/aung-ko-oo-042342242/'),
             const SizedBox(width: AppDimensions.spacingM),
             _buildSocialIcon(
-                context, FontAwesomeIcons.linkedin, 'https://linkedin.com'),
+                context, FontAwesomeIcons.telegram, 'https://t.me/kooo2109'),
             const SizedBox(width: AppDimensions.spacingM),
-            _buildSocialIcon(
-                context, FontAwesomeIcons.twitter, 'https://twitter.com'),
-            const SizedBox(width: AppDimensions.spacingM),
-            _buildSocialIcon(
-                context, FontAwesomeIcons.facebook, 'https://facebook.com'),
+            _buildSocialIcon(context, FontAwesomeIcons.facebook,
+                'https://facebook.com/kooo1210'),
           ],
         ).animate().fadeIn(duration: 600.ms, delay: 400.ms).slideY(begin: -0.2),
 

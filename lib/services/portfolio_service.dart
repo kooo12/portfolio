@@ -18,7 +18,7 @@ class PortfolioService {
       socialLinks: {
         "github": "https://github.com/kooo12",
         "linkedin": "https://www.linkedin.com/in/aung-ko-oo-042342242/",
-        "twitter": "https://twitter.com/johndoe",
+        "telegram": "https://t.me/kooo2109",
         "facebook": "https://facebook.com/kooo1210",
       },
     );
@@ -56,6 +56,7 @@ class PortfolioService {
           "Flutter",
           "GetX",
           "REST APIs",
+          "Firebase",
           "Firebase FCM",
           "Socket.io",
           "Map Box"
@@ -63,6 +64,7 @@ class PortfolioService {
         // githubUrl: "https://github.com/johndoe/ecommerce-app",
         playStoreUrl:
             "https://play.google.com/store/apps/details?id=com.tps.htunpauk&hl=en",
+        appStoreUrl: "https://apps.apple.com/us/app/htunpauk/id6742842928",
         category: "Mobile",
       ),
       Project(
@@ -131,8 +133,8 @@ class PortfolioService {
           "Firebase FCM",
           "Firebase Firestore",
         ],
-        githubUrl: "https://github.com/johndoe/weather-app",
-        liveUrl: null,
+        githubUrl: null,
+        liveUrl: "https://sonus-music-web.firebaseapp.com",
         category: "Mobile",
       ),
       Project(

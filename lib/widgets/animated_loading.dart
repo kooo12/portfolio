@@ -1,4 +1,4 @@
-import 'dart:math' as math;
+// import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -61,7 +61,7 @@ class _ForegroundContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final caretOpacity = progress % 0.25 > 0.12 ? 0.0 : 1.0;
-    final arrowOffset = math.sin(progress * math.pi * 2) * 8;
+    // final arrowOffset = math.sin(progress * math.pi * 2) * 8;
 
     return Center(
       child: Padding(
@@ -103,15 +103,15 @@ class _ForegroundContent extends StatelessWidget {
             ),
             const SizedBox(height: AppDimensions.spacingXL),
             _SocialRow(progress: progress),
-            const SizedBox(height: AppDimensions.spacingXL),
-            Transform.translate(
-              offset: Offset(0, arrowOffset),
-              child: Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: Colors.white.withOpacity(0.8),
-                size: 42,
-              ),
-            ),
+            // const SizedBox(height: AppDimensions.spacingXL),
+            // Transform.translate(
+            //   offset: Offset(0, arrowOffset),
+            //   child: Icon(
+            //     Icons.keyboard_arrow_down_rounded,
+            //     color: Colors.white.withOpacity(0.8),
+            //     size: 42,
+            //   ),
+            // ),
           ],
         ),
       ),

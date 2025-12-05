@@ -7,6 +7,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import '../controllers/portfolio_controller.dart';
+import '../controllers/theme_controller.dart';
 import '../models/skill.dart';
 
 class SkillCard extends StatelessWidget {
@@ -20,6 +21,7 @@ class SkillCard extends StatelessWidget {
   final int delay;
   final PortfolioController portfolioController =
       Get.find<PortfolioController>();
+  final ThemeController themeController = Get.find<ThemeController>();
 
   Map<String, dynamic> _getSkillInfo(String skillName) {
     switch (skillName.toLowerCase()) {
@@ -213,14 +215,17 @@ class SkillCard extends StatelessWidget {
     required IconData fallbackIcon,
     required double size,
     required bool isMobile,
+    required bool isDarkMode,
   }) {
     final isSvg = iconUrl.toLowerCase().endsWith('.svg');
+    final iconColor = isDarkMode ? Colors.white : Colors.black87;
 
     if (isSvg) {
       return _SvgNetworkImageWithFallback(
         url: iconUrl,
         fallbackIcon: fallbackIcon,
         size: size,
+        isDarkMode: isDarkMode,
       );
     } else {
       return CachedNetworkImage(
@@ -234,14 +239,14 @@ class SkillCard extends StatelessWidget {
           child: CircularProgressIndicator(
             strokeWidth: 2,
             valueColor: AlwaysStoppedAnimation<Color>(
-              Colors.white.withOpacity(0.3),
+              iconColor.withOpacity(0.3),
             ),
           ),
         ),
         errorWidget: (context, url, error) => FaIcon(
           fallbackIcon,
           size: size * 0.7,
-          color: Colors.white,
+          color: iconColor,
         ),
       );
     }
@@ -255,8 +260,6 @@ class SkillCard extends StatelessWidget {
     final icon = skillInfo['icon'] as IconData;
     final isMobile =
         MediaQuery.of(context).size.width < AppDimensions.mobileBreakpoint;
-    final baseColor = Theme.of(context).cardColor.withOpacity(0.05);
-    final hoverColor = primaryColor.withOpacity(0.18);
 
     return MouseRegion(
       onEnter: (_) => portfolioController.setHoveredSkill(skill.name),
@@ -268,6 +271,22 @@ class SkillCard extends StatelessWidget {
               // isMobile ? true :
               portfolioController.isSkillHovered(skill.name);
           final showLabel = isHovered;
+          final currentIsDark = themeController.isDarkMode;
+
+          // Recalculate colors based on current theme
+          final currentBaseColor = currentIsDark
+              ? Theme.of(context).cardColor.withOpacity(0.15)
+              : Theme.of(context).cardColor.withOpacity(0.05);
+          final currentHoverColor = currentIsDark
+              ? primaryColor.withOpacity(0.25)
+              : primaryColor.withOpacity(0.18);
+          final currentBorderColor = currentIsDark
+              ? (isHovered
+                  ? primaryColor.withOpacity(0.6)
+                  : Colors.white.withOpacity(0.1))
+              : (isHovered
+                  ? primaryColor.withOpacity(0.7)
+                  : Colors.black.withOpacity(0.08));
 
           return AnimatedScale(
             scale: isHovered ? 1.04 : 1.0,
@@ -278,23 +297,24 @@ class SkillCard extends StatelessWidget {
               curve: Curves.easeOut,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: isHovered ? hoverColor : baseColor,
+                color: isHovered ? currentHoverColor : currentBaseColor,
                 borderRadius: BorderRadius.circular(AppDimensions.radiusL),
                 border: Border.all(
-                  color: isHovered
-                      ? primaryColor.withOpacity(0.7)
-                      : Colors.white.withOpacity(0.05),
+                  color: currentBorderColor,
                   width: 1.2,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.25),
+                    color: currentIsDark
+                        ? Colors.black.withOpacity(0.4)
+                        : Colors.black.withOpacity(0.15),
                     blurRadius: isHovered ? 22 : 10,
                     offset: Offset(0, isHovered ? 16 : 8),
                   ),
                   if (isHovered)
                     BoxShadow(
-                      color: accentColor.withOpacity(0.45),
+                      color:
+                          accentColor.withOpacity(currentIsDark ? 0.35 : 0.45),
                       blurRadius: 30,
                       spreadRadius: 6,
                     ),
@@ -310,6 +330,7 @@ class SkillCard extends StatelessWidget {
                       fallbackIcon: icon,
                       size: isMobile ? 40 : 48,
                       isMobile: isMobile,
+                      isDarkMode: currentIsDark,
                     ),
                   ),
                   Positioned(
@@ -328,11 +349,21 @@ class SkillCard extends StatelessWidget {
                             vertical: 4,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: currentIsDark
+                                ? Theme.of(context).cardColor
+                                : Colors.white,
                             borderRadius: BorderRadius.circular(999),
+                            border: currentIsDark
+                                ? Border.all(
+                                    color: primaryColor.withOpacity(0.3),
+                                    width: 1,
+                                  )
+                                : null,
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.15),
+                                color: currentIsDark
+                                    ? Colors.black.withOpacity(0.3)
+                                    : Colors.black.withOpacity(0.15),
                                 blurRadius: 12,
                                 offset: const Offset(0, 4),
                               ),
@@ -341,7 +372,9 @@ class SkillCard extends StatelessWidget {
                           child: Text(
                             skill.name,
                             style: TextStyle(
-                              color: primaryColor.darken(),
+                              color: currentIsDark
+                                  ? primaryColor
+                                  : primaryColor.darken(),
                               fontSize: 11,
                               fontWeight: FontWeight.w600,
                               letterSpacing: 0.4,
@@ -371,11 +404,14 @@ class SkillCard extends StatelessWidget {
     final years = skillInfo['yearsExp'] as int;
     final description = skillInfo['description'] as String;
     final extraDescription = skillInfo['extraDescription'] as String;
+    final isDarkMode = themeController.isDarkMode;
+    final theme = Theme.of(context);
 
     showDialog(
       context: context,
       builder: (context) => Dialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        backgroundColor: Colors.transparent,
         child: Container(
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width > 600
@@ -387,13 +423,25 @@ class SkillCard extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-              colors: [
-                primaryColor.withOpacity(0.05),
-                primaryColor.withOpacity(0.02),
-                const Color.fromARGB(255, 156, 156, 156),
-              ],
+              colors: isDarkMode
+                  ? [
+                      primaryColor.withOpacity(0.15),
+                      primaryColor.withOpacity(0.08),
+                      theme.scaffoldBackgroundColor,
+                    ]
+                  : [
+                      primaryColor.withOpacity(0.05),
+                      primaryColor.withOpacity(0.02),
+                      theme.scaffoldBackgroundColor,
+                    ],
             ),
             borderRadius: BorderRadius.circular(24),
+            border: Border.all(
+              color: isDarkMode
+                  ? Colors.white.withOpacity(0.1)
+                  : Colors.black.withOpacity(0.05),
+              width: 1,
+            ),
           ),
           padding:
               EdgeInsets.all(MediaQuery.of(context).size.width > 600 ? 32 : 20),
@@ -427,6 +475,7 @@ class SkillCard extends StatelessWidget {
                           size:
                               MediaQuery.of(context).size.width > 600 ? 50 : 40,
                           isMobile: MediaQuery.of(context).size.width <= 600,
+                          isDarkMode: isDarkMode,
                         ),
                       ),
                     ),
@@ -499,10 +548,14 @@ class SkillCard extends StatelessWidget {
                       padding: EdgeInsets.all(
                           MediaQuery.of(context).size.width > 600 ? 20 : 16),
                       decoration: BoxDecoration(
-                        color: primaryColor.withOpacity(0.05),
+                        color: isDarkMode
+                            ? primaryColor.withOpacity(0.15)
+                            : primaryColor.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: primaryColor.withOpacity(0.1),
+                          color: isDarkMode
+                              ? primaryColor.withOpacity(0.2)
+                              : primaryColor.withOpacity(0.1),
                         ),
                       ),
                       child: Column(
@@ -540,7 +593,9 @@ class SkillCard extends StatelessWidget {
                           Container(
                             height: 8,
                             decoration: BoxDecoration(
-                              color: primaryColor.withOpacity(0.1),
+                              color: isDarkMode
+                                  ? primaryColor.withOpacity(0.2)
+                                  : primaryColor.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: FractionallySizedBox(
@@ -663,11 +718,13 @@ class _SvgNetworkImageWithFallback extends StatefulWidget {
   final String url;
   final IconData fallbackIcon;
   final double size;
+  final bool isDarkMode;
 
   const _SvgNetworkImageWithFallback({
     required this.url,
     required this.fallbackIcon,
     required this.size,
+    required this.isDarkMode,
   });
 
   @override
@@ -709,6 +766,8 @@ class _SvgNetworkImageWithFallbackState
     return FutureBuilder<String?>(
       future: _svgData,
       builder: (context, snapshot) {
+        final iconColor = widget.isDarkMode ? Colors.white : Colors.black87;
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return SizedBox(
             width: widget.size * 0.7,
@@ -716,7 +775,7 @@ class _SvgNetworkImageWithFallbackState
             child: CircularProgressIndicator(
               strokeWidth: 2,
               valueColor: AlwaysStoppedAnimation<Color>(
-                Colors.white.withOpacity(0.3),
+                iconColor.withOpacity(0.3),
               ),
             ),
           );
@@ -726,7 +785,7 @@ class _SvgNetworkImageWithFallbackState
           return FaIcon(
             widget.fallbackIcon,
             size: widget.size * 0.7,
-            color: Colors.white,
+            color: iconColor,
           );
         }
 
@@ -736,8 +795,8 @@ class _SvgNetworkImageWithFallbackState
             width: widget.size,
             height: widget.size,
             fit: BoxFit.contain,
-            colorFilter: const ColorFilter.mode(
-              Colors.white,
+            colorFilter: ColorFilter.mode(
+              iconColor,
               BlendMode.srcIn,
             ),
           );
@@ -745,7 +804,7 @@ class _SvgNetworkImageWithFallbackState
           return FaIcon(
             widget.fallbackIcon,
             size: widget.size * 0.7,
-            color: Colors.white,
+            color: iconColor,
           );
         }
       },

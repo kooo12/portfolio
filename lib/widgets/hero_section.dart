@@ -478,7 +478,7 @@ class HeroSection extends StatelessWidget {
             FontAwesomeIcons.linkedin, personalInfo.socialLinks['linkedin']!),
         const SizedBox(width: AppDimensions.spacingM),
         _buildSocialIcon(
-            FontAwesomeIcons.xTwitter, personalInfo.socialLinks['twitter']!),
+            FontAwesomeIcons.telegram, personalInfo.socialLinks['telegram']!),
         const SizedBox(width: AppDimensions.spacingM),
         _buildSocialIcon(
             FontAwesomeIcons.facebook, personalInfo.socialLinks['facebook']!),
